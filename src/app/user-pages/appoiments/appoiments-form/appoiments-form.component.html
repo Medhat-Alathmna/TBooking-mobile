@@ -1,0 +1,83 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">Back
+        <ion-icon name="chevron-back-outline" slot="start"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="medium" [fullscreen]="true">
+
+  <ion-grid>
+
+      <ion-row>
+ 
+
+          <ion-label style="font-size: 1.5rem;padding-bottom: 1rem" translate>Customer Deatils</ion-label>
+
+          <ion-input mode="md" readonly required="true" style="margin-bottom: 5px" fill="outline" name="firstName" [label]="'First Name'|translate"
+            [value]="appointment.customer.firstName" [placeholder]="'First Name'|translate" type="text" labelPlacement="stacked"></ion-input>
+  
+          <ion-input mode="md" readonly required="true" style="margin-bottom: 5px" fill="outline" name="middleName" [label]="'Middle Name'|translate"
+          [value]="appointment.customer.middleName" type="text"[placeholder]="'Middle Name'|translate"
+            labelPlacement="stacked"></ion-input>
+  
+          <ion-input mode="md" readonly required="true" style="margin-bottom: 5px" fill="outline" name="lastName" [label]="'Last Name'|translate"
+          [value]="appointment.customer.lastName" [placeholder]="'Last Name'|translate"  type="text" labelPlacement="stacked"></ion-input>
+  
+          <ion-input mode="md" readonly required="true" style="margin-bottom: 5px" inputmode="tel" [maxlength]="15" fill="outline"
+            name="phone" [label]="'WhatsApp No.'|translate"  [value]="appointment.phone" placeholder="962-" type="tel"
+            labelPlacement="stacked"></ion-input>
+  
+          <ion-input mode="md" readonly fill="outline" [label]="'Address'|translate" name="address" [value]="appointment.address" placeholder="Amman"
+            type="text" labelPlacement="stacked"></ion-input>
+  
+      </ion-row>
+      
+
+    <ion-row>
+      <ion-label style="font-size: 1.5rem;padding-bottom: 1rem" translate>Appointment Details</ion-label>
+      <ion-card style="width: -webkit-fill-available;" id="open-modal2">
+        <ion-row style="justify-content: center;">
+          <div style="padding: 15px;">
+            <!-- <ion-icon style="font-size: large;" name="time-outline"></ion-icon> -->
+            <ion-label style="font-size: large;" translate>Appointment Time</ion-label>
+          </div>
+        </ion-row>
+        <ion-row>
+          <ion-col style="justify-content: center;display: flex;">
+            <div style="padding: 15px;">
+              <ion-icon name="calendar-outline"></ion-icon>
+              <ion-label color="primary" style="padding-left: 5px;" >{{appointment.fromDate | date:'YYYY-MM-dd'}}</ion-label>
+            </div>
+          </ion-col>
+          <ion-col style="justify-content: center;display: flex;">
+            <div style="padding: 15px;">
+              <ion-icon name="alarm-outline"></ion-icon>
+              <ion-label color="primary" style="padding-left: 5px;">{{appointment.fromDate | date:'hh:mm a'}}</ion-label>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-card>
+    </ion-row>
+    <ion-row style="justify-content: space-between;">
+      <ion-label style="font-size: 1.5rem;" translate>Services</ion-label>
+      <!-- <ion-label style="display: flex;align-items: center;">Total: {{getTotalPrice().serviceAmount}}</ion-label> -->
+    </ion-row>
+    <ion-row *ngFor="let appo of appointment.employee">
+      <ion-button style="width: 100%;">{{appo.username}}</ion-button>
+      <ion-col *ngFor="let service of appo.services" size="12">
+        <ion-card style="margin-left: 0;margin-right: 0;width: -webkit-fill-available;">
+          <ion-card-header style="flex-direction: row;justify-content: space-between;">
+            <ion-card-title style="width: 70%">{{service.ar}}</ion-card-title>
+            <ion-text style="align-self: center;">{{'Price'|translate}}: {{service.price}} </ion-text>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

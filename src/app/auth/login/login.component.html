@@ -1,0 +1,44 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+      <ion-buttons slot="end">
+        <ion-back-button default-href="#"></ion-back-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+<ion-content color="light" class="ion-padding">
+
+    <ion-grid>
+        <ion-row style="justify-content: center;
+        padding-top: 12rem;">
+            <ion-text [style]="lang == 'en'?'display: flex;flex-direction: row':'display: flex;flex-direction: row-reverse'" color="secondary">
+                <h1 style="font-size: xxx-large; color: orange;">T </h1>
+                <h1 style="font-size: xxx-large;">Booking</h1>
+            </ion-text>
+
+        </ion-row>
+        <ion-row>
+            <ion-col >
+                    <ion-input  [(ngModel)]="email" labelPlacement="stacked"  [placeholder]="'User Name'|translate">
+                      <ion-icon style="padding-left: 3px;" slot="start" name="person-outline" aria-hidden="true"></ion-icon>
+                    </ion-input>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col >
+                    <ion-input  [(ngModel)]="password" labelPlacement="stacked" type="password"  [placeholder]="'Password'|translate">
+                      <ion-icon style="padding-left: 3px;" slot="start" name="lock-closed-outline" aria-hidden="true"></ion-icon>
+                      <ion-button fill="clear" slot="end" aria-label="Show/hide">
+                        <ion-icon size="small" slot="icon-only" name="eye" aria-hidden="true"></ion-icon>
+                      </ion-button>
+                    </ion-input>
+            </ion-col>
+        </ion-row>
+        <ion-row style="padding-top: 2rem;">
+            <ion-col >
+                <ion-button style="width: -webkit-fill-available;" [disabled]="!email || !password" 
+                (click)="login()" color="success" translate>LOGIN</ion-button> 
+            </ion-col>
+        </ion-row>
+        
+    </ion-grid>
+</ion-content>

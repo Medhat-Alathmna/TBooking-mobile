@@ -1,0 +1,52 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-back-button default-href="/"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content color="medium" [fullscreen]="true">
+  <ion-row>
+    <ion-label class="starter"> Welcome to our Works</ion-label>
+  </ion-row>
+  <ion-row *ngFor="let post of pinPosts">
+    <ion-card style="background-color: #cbcbcb;" *ngFor="let ad of post?.ads, let index=index">
+      <ion-card-content (click)="postForm(post)" style="width: 100%;color: blue;display: flex;min-height: 9rem" *ngIf="index<=0">
+        <ion-row style="width: 120%">
+          <ion-label> {{lang === 'en'?post?.textEN :post?.textAR}}</ion-label>
+
+        </ion-row>
+        <ion-row style="text-align: end;justify-content: end">
+          <ion-icon name="pricetag-outline"></ion-icon>
+          <ion-label style="font-size: 10px;">{{post?.createdAt | date:'YYYY-MM-dd hh:mm a'}}</ion-label>
+
+        </ion-row>
+      </ion-card-content>
+      <img style="height: 25rem;" (click)="postForm(post)" *ngIf="index<=0 &&cheackMediaType(ad.mime,'image')" [src]="imgUrl+ad?.url" />
+      <video  *ngIf="index<=0 && cheackMediaType(ad.mime,'video')" width="800" height="400"
+        [src]="imgUrl+ad.url| safe" controls></video>
+    </ion-card>
+  </ion-row>
+  <ion-row *ngFor="let post of posts">
+    <ion-card style="background-color: #cbcbcb;" *ngFor="let ad of post?.ads, let index=index">
+      <ion-card-content (click)="postForm(post)" style="width: 100%;color: blue;min-height: 9rem;display: flex;
+      flex-direction: column;
+      justify-content: space-between" *ngIf="index<=0">
+        <ion-row>
+          <ion-label> {{lang === 'en'?post?.textEN :post?.textAR}}</ion-label>
+
+        </ion-row>
+        <ion-row style="justify-content: flex-end">
+          <ion-label style="font-size: 10px;">{{post?.createdAt | date:'YYYY-MM-dd hh:mm a'}}</ion-label>
+
+        </ion-row>
+      </ion-card-content>
+      <img (click)="postForm(post)" style="height: 25rem;" *ngIf="index<=0 && cheackMediaType(ad.mime,'image')" [src]="imgUrl+ad?.url" />
+      <video  *ngIf="index<=0 &&cheackMediaType(ad.mime,'video')" width="800" height="400"
+        [src]="imgUrl+ad.url| safe" controls></video>
+    </ion-card>
+  </ion-row>
+</ion-content>

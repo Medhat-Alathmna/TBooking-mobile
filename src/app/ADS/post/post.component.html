@@ -1,0 +1,31 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">Back
+        <ion-icon name="chevron-back-outline" slot="start"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content color="medium" [fullscreen]="true">
+
+  <ion-row>
+    <ion-label class="head">
+      {{lang === 'ar'?post?.textAR:post?.textEN}}
+    </ion-label>
+  </ion-row>
+  <ion-row class="date">
+    <ion-label  >
+      {{post?.createdAt | date:'YYYY-MM-dd hh:mm a'}}
+    </ion-label>
+  </ion-row>
+  <ion-row>
+    <ion-card  *ngFor=" let ad of post.ads , let index=index">
+      <img style="height: 25rem;" *ngIf="cheackMediaType(ad.mime,'image')" [src]="imgUrl+ad?.url" />
+      <video  *ngIf=" cheackMediaType(ad.mime,'video')" width="800" height="400"
+        [src]="imgUrl+ad.url| safe" controls></video>
+    </ion-card>
+  </ion-row>
+</ion-content>

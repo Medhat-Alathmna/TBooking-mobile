@@ -1,0 +1,37 @@
+<ion-app>
+  <ion-split-pane contentId="main-content">
+    <ion-menu contentId="main-content" type="overlay">
+      <ion-content>
+        <ion-list id="inbox-list">
+          <ion-list-header>TBooking</ion-list-header>
+          <ion-note>medhatalathmna&#64;gmail.com</ion-note>
+
+          <ion-menu-toggle auto-hide="false">
+            <ion-item (click)="moveToLogin()" lines="none">
+              <ion-icon style="margin-inline-end: 1rem;" aria-hidden="true" name="person-outline"></ion-icon>
+              <ion-label>{{authData?authData.user.username:'Login'|translate}}</ion-label>
+            </ion-item>
+            <ion-item *ngIf="authData" lines="none" routerLink="products">
+              <ion-icon style="margin-inline-end: 1rem;" aria-hidden="true" name="cube-outline"></ion-icon>
+              <ion-label translate>Products</ion-label>
+            </ion-item>
+            <ion-item *ngIf="authData" lines="none" routerLink="appoiments">
+              <ion-icon style="margin-inline-end: 1rem;" aria-hidden="true" name="calendar-outline"></ion-icon>
+              <ion-label translate>Appointments</ion-label>
+            </ion-item>
+            <ion-item (click)="logout()" *ngIf="authData" lines="none">
+              <ion-icon style="margin-inline-end: 1rem;" aria-hidden="true" name="log-out-outline"></ion-icon>
+              <ion-label translate>Log Out</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
+        </ion-list>
+        <ion-item (click)="changeLang()" lines="none">
+          <ion-icon style="margin-inline-end: 1rem;" aria-hidden="true"  name="earth-outline"></ion-icon>
+          <ion-label>{{lang!=='en'?'English':'العربية'}}</ion-label>
+        </ion-item>
+      </ion-content>
+    </ion-menu>
+    <ion-router-outlet id="main-content"></ion-router-outlet>
+  </ion-split-pane>
+</ion-app>

@@ -1,0 +1,40 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title></ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large"></ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div id="container">
+    <ion-grid>
+      <ion-row style="justify-content: space-around;position: relative;bottom: 5rem;">
+        <ion-img class="img" src="/assets/imgs/Tbooking.png"></ion-img>
+
+      </ion-row>
+      <ion-row style="flex-wrap: nowrap;">
+        <ion-button routerLink="/ads" expand="block" style="width: -webkit-fill-available;">
+          <ion-label style="padding-left: 5px;" translate>Our Works & Offers</ion-label>
+        </ion-button>
+        <ion-button size="large" routerLink="/main" expand="block" style="width: -webkit-fill-available;">
+          <!-- <ion-icon name="image"></ion-icon> -->
+          <ion-label style="padding-left: 5px;" translate>Booking Now !</ion-label>
+        </ion-button>
+      </ion-row>
+    </ion-grid>
+  </div>
+  <ion-row style="position: fixed;bottom: 1rem; text-align: center;width: -webkit-fill-available;
+    display: flow-root">
+    <ion-label color="medium">
+      Powered by Tbooking
+    </ion-label>
+  </ion-row>
+</ion-content>

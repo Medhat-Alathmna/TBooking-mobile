@@ -1,0 +1,56 @@
+<ion-content mode="ios" color="light" class="ion-padding">
+  <ion-header>
+    <ion-toolbar mode="ios" color="light">
+      <ion-buttons slot="start">
+        <ion-back-button default-href="#"></ion-back-button>
+      </ion-buttons>
+      <ion-text slot="end">
+
+        <ion-icon (click)="presentActionSheet()" name="ellipsis-vertical-outline"></ion-icon>
+
+        <!-- Total: {{currentAppoiments.length}} -->
+
+      </ion-text>
+
+    </ion-toolbar>
+
+  </ion-header>
+  <ion-refresher (ionRefresh)="handleRefresh($event)"  slot="fixed">
+    <ion-refresher-content refreshingSpinner="circles"></ion-refresher-content>
+  </ion-refresher>
+  <ion-searchbar animated="true" [placeholder]="'Yes'|translate"></ion-searchbar>
+  <ion-row style="flex-direction: column;
+    align-items: center;">
+    <ion-label [class]="class">{{listHeader |translate}}</ion-label>
+    <ion-label style="padding-top: 0.5rem;font-weight: bolder;font-size: larger;">
+      {{currentDateGlobal | date:'YYYY-MM-dd '}}</ion-label>
+  </ion-row>
+
+
+  <ion-list *ngFor="let appointment of currentAppoiments" style="background-color: transparent;">
+    <ion-card (click)="appoimentForm(appointment)" style="margin-left: 0;margin-right: 0;">
+      <ion-card-header style="flex-direction: row;
+    justify-content: space-evenly;">
+        <ion-card-title>{{appointment.attributes.customer.firstName}} {{appointment.attributes.customer.middleName}} {{appointment.attributes.customer.lastName}}</ion-card-title>
+        <!-- <ion-card-title>{{appointment.attributes.customer.middleName}}</ion-card-title>
+        <ion-card-title>{{appointment.attributes.customer.lastName}}</ion-card-title> -->
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <!-- <ion-col size="4" style="text-align: start;max-width: fit-content; display: flex;">
+              <ion-text [class]="appointment.attributes.approved?'Completed':'Canceled'">{{appointment.attributes.approved?'Approved':'UnApproved'}}</ion-text>
+            </ion-col> -->
+            <ion-col style="text-align: start" size="6">
+              
+              <ion-text class="Draft"><ion-icon name="time-outline"></ion-icon> {{appointment.attributes.fromDate | date:'hh:mm a'}}</ion-text>
+            </ion-col>
+            <ion-col style="text-align: end; max-width: fit-content" size="6">
+              <ion-text class="Draft"><ion-icon name="pricetag-outline"></ion-icon> {{appointment.attributes.number}}</ion-text>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+</ion-content>

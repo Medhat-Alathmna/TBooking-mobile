@@ -1,0 +1,28 @@
+
+<ion-content mode="ios" color="light" class="ion-padding">
+  <ion-header>
+    <ion-toolbar mode="ios" color="light">
+      <ion-buttons slot="start">
+        <ion-button (click)="dismissModal()">Back <ion-icon name="chevron-back-outline" slot="start"></ion-icon>
+        </ion-button> 
+           </ion-buttons>
+      <ion-title>Service</ion-title>
+      <ion-text slot="end">
+        Total: {{total}}
+      </ion-text>
+    </ion-toolbar>
+
+  </ion-header>
+  <ion-searchbar (ionClear)="getServices()" (ionChange)="search($event.target.value)" animated="true" placeholder="Services Name"></ion-searchbar>
+
+
+  <ion-list *ngFor="let service of services" style="background-color: transparent;">
+    <ion-card (click)="addBookingForm(service)" style="margin-left: 0;margin-right: 0;">
+      <ion-card-header style="flex-direction: row;justify-content: space-between;">
+        <ion-card-title style="width: 70%">{{lang==='ar'?service.ar:service.en}}</ion-card-title>
+        <ion-text>Price: {{service.price}} $</ion-text>
+      </ion-card-header>
+
+    </ion-card>
+  </ion-list>
+</ion-content>
