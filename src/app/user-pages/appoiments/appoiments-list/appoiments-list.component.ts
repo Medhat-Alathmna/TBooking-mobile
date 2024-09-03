@@ -28,14 +28,13 @@ export class AppoimentsListComponent extends BaseComponent implements OnInit {
   listHeader = this.trans('Approved Appointments')
 
   currentDateGlobal = moment(new Date()).format('YYYY-MM-DDT00:00')
-  currentDay = moment(new Date()).format('YYYY-MM-DD')
   constructor(private appoimentsServices: AppoimentsService,
-     public loadingController: LoadingController,
+    public loadingController: LoadingController,
     private modalController: ModalController, private datePipe: DatePipe,
-    private actionSheetCtrl: ActionSheetController,public translate?: TranslateService,) { super(loadingController,translate) }
+    private actionSheetCtrl: ActionSheetController, public translate?: TranslateService,) { super(loadingController, translate) }
 
   ngOnInit() {
-    this.getTodayAppo()
+    this.getTodayAppo(null)
 
   }
 
@@ -59,7 +58,9 @@ export class AppoimentsListComponent extends BaseComponent implements OnInit {
           handler: () => {
             this.listHeader = this.trans('Completed Appointments'),
               this.currentAppoiments = this.completedAppoit,
-              this.class = 'Completed'
+              console.log(this.currentAppoiments);
+
+            this.class = 'Completed'
 
           },
 
@@ -79,7 +80,7 @@ export class AppoimentsListComponent extends BaseComponent implements OnInit {
     await actionSheet.present();
   }
 
-  async getTodayAppo() {
+  async getTodayAppo(currentDay = moment(new Date()).format('YYYY-MM-DD')) {
     this.unapprovedAppoit = []
     this.approvedAppointments = []
     this.completedAppoit = []
@@ -90,11 +91,12 @@ export class AppoimentsListComponent extends BaseComponent implements OnInit {
       }
       let objects: any[] = []
       objects = results.data
-      this.unapprovedAppoit = objects.filter(x => x.attributes.approved == false)
-      this.approvedAppointments = objects.filter(x => x.attributes.approved == true && x.attributes.status === 'Draft' && (x.attributes.fromDate = moment(new Date(x.attributes.fromDate)).format('YYYY-MM-DD')) == this.currentDay)
-      this.completedAppoit = objects.filter(x => x.attributes.status === 'Completed')
+      this.unapprovedAppoit = objects.filter(x => x.attributes.approved == false && (x.attributes.fromDate = moment(new Date(x.attributes.fromDate)).format('YYYY-MM-DD')) === currentDay)
+      this.approvedAppointments = objects.filter(x => x.attributes.approved == true && x.attributes.status === 'Draft' && (x.attributes.fromDate = moment(new Date(x.attributes.fromDate)).format('YYYY-MM-DD')) === currentDay)
+      this.completedAppoit = objects.filter(x => x.attributes.status === 'Completed' && (x.attributes.fromDate = moment(new Date(x.attributes.fromDate)).format('YYYY-MM-DD')) === currentDay)
       this.listHeader = this.trans('Approved Appointments')
       this.currentAppoiments = this.approvedAppointments
+      this.class = 'Unpaid'
       this.dismissLoading()
       subscription.unsubscribe()
     }, error => {
@@ -102,8 +104,23 @@ export class AppoimentsListComponent extends BaseComponent implements OnInit {
       subscription.unsubscribe()
     })
   }
+  selectDate(value) {
+    if (!isSet(value)) {
+      this.currentDateGlobal = moment(new Date()).format('YYYY-MM-DDT00:00')
+      this.getTodayAppo()
+      this.dismissModal();
 
+      return
+    }
+    this.currentDateGlobal = moment(new Date(value)).format('YYYY-MM-DDT00:00')
+    const selectDate = moment(new Date(this.currentDateGlobal)).format('YYYY-MM-DD')
+    this.getTodayAppo(selectDate)
+    this.dismissModal();
 
+  }
+  dismissModal() {
+    this.modalController.dismiss();
+  }
   async appoimentForm(appointment?) {
     const modal = await this.modalController.create({
       component: AppoimentsFormComponent,
@@ -116,7 +133,7 @@ export class AppoimentsListComponent extends BaseComponent implements OnInit {
   }
   handleRefresh(event) {
     setTimeout(() => {
-      this.getTodayAppo()
+      this.getTodayAppo(null)
       event.target.complete();
     }, 2000);
   }

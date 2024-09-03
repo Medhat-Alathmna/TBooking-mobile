@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Products } from 'src/app/modals/products';
 import { ProductsService } from '../products.service';
 import { BaseComponent, isSet } from 'src/app/core/base/base.component';
-// import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
+import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
 
 import { LoadingController, ModalController, ToastController } from '@ionic/angular';
 
@@ -10,7 +10,7 @@ import { LoadingController, ModalController, ToastController } from '@ionic/angu
   selector: 'app-product-form',
   templateUrl: './product-form.component.html',
   styleUrls: ['./product-form.component.scss'],
-  // providers: [BarcodeScanner]
+  providers: [BarcodeScanner]
 })
 export class ProductFormComponent extends BaseComponent implements OnInit {
 
@@ -20,7 +20,7 @@ export class ProductFormComponent extends BaseComponent implements OnInit {
   brands: any[] = []
   medicineTypes: any[] = []
   constructor(private productsService: ProductsService,   
-    //  private barcodeScanner: BarcodeScanner,
+     private barcodeScanner: BarcodeScanner,
    public loadingController: LoadingController, private modalController: ModalController,
     public toastController: ToastController,) { super(loadingController,null, toastController) }
 
@@ -113,11 +113,11 @@ export class ProductFormComponent extends BaseComponent implements OnInit {
     this.modalController.dismiss();
   }
   async scanItem() {
-    // this.barcodeScanner.scan().then(barcodeData => {
-    //   this.getProductByBarcode(barcodeData.text)
-    // }).catch(err => {
-    //   console.log('Error', err);
-    // });
+    this.barcodeScanner.scan().then(barcodeData => {
+      this.getProductByBarcode(barcodeData.text)
+    }).catch(err => {
+      console.log('Error', err);
+    });
   }
 
   async getProductByBarcode(barcode): Promise<void> {

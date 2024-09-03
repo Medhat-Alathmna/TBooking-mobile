@@ -4,13 +4,13 @@ import { LoadingController, ModalController, NavController } from '@ionic/angula
 import { Products } from 'src/app/modals/products';
 import { ProductsService } from '../products.service';
 import { ProductFormComponent } from '../product-form/product-form.component';
-// import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
+import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
 
 @Component({
   selector: 'app-products-list',
   templateUrl: './products-list.component.html',
   styleUrls: ['./products-list.component.scss'],
-  // providers: [BarcodeScanner]
+  providers: [BarcodeScanner]
 
 })
 export class ProductsListComponent extends BaseComponent implements OnInit {
@@ -20,7 +20,7 @@ export class ProductsListComponent extends BaseComponent implements OnInit {
   formMode=false
   constructor( public loadingController: LoadingController,
     private modalController: ModalController,
-    //  private barcodeScanner: BarcodeScanner
+     private barcodeScanner: BarcodeScanner,
      public nav: NavController, private productService: ProductsService) { super(loadingController) }
 
   async ngOnInit() {
@@ -88,12 +88,12 @@ export class ProductsListComponent extends BaseComponent implements OnInit {
   //   this.dismissModal()    
   // }
   async scanItem() {
-    // this.barcodeScanner.scan().then(async barcodeData => {
-    //   await this.getProductByBarcode(barcodeData.text)
+    this.barcodeScanner.scan().then(async barcodeData => {
+      await this.getProductByBarcode(barcodeData.text)
 
-    // }).catch(err => {
-    //   console.log('Error', err);
-    // });
+    }).catch(err => {
+      console.log('Error', err);
+    });
   }
 
   async getProductByBarcode(barcode): Promise<void> {

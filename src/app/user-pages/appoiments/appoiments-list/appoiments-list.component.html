@@ -5,6 +5,7 @@
         <ion-back-button default-href="#"></ion-back-button>
       </ion-buttons>
       <ion-text slot="end">
+        <ion-icon style="margin-inline-end: 1rem;" id="open-modal2" aria-hidden="true" name="calendar-outline"></ion-icon>
 
         <ion-icon (click)="presentActionSheet()" name="ellipsis-vertical-outline"></ion-icon>
 
@@ -54,3 +55,21 @@
     </ion-card>
   </ion-list>
 </ion-content>
+
+
+<ion-modal #openmodal2 trigger="open-modal2">
+  <ng-template>
+    <ion-content force-overscroll="false">
+      <ion-datetime #dateTime>
+      </ion-datetime>
+      <ion-toolbar>
+        <ion-buttons style="justify-content: space-between !important;">
+          <ion-button color="danger" (click)="dismissModal()" translate> Cancel</ion-button>
+          <ion-button (click)="selectDate(null)" translate> Today</ion-button>
+          <ion-button (click)="selectDate(dateTime.value)" translate> Done</ion-button>
+
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-content>
+  </ng-template>
+</ion-modal>

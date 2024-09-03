@@ -3,3 +3,20 @@ ion-card-title{
     font-size: large;
 
 }
+ion-modal {
+  
+    --background:rgba(44,39,45,0.2);
+    &::part(content){
+        backdrop-filter: blur(6px);
+    }
+    ion-content {
+      --background: transparent;
+     --padding-top:25vh;
+     --padding-start:20px;
+     --padding-end:20px;
+      ion-datetime{
+          border-radius: 3px;
+      }
+      
+    }
+  }

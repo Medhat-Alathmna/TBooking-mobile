@@ -13,6 +13,7 @@ export class Appointment {
     appoBy?: any;
     services?: any;
     status?: any;
+    createBy?: any;
     payBy?: any;
     employee?: any | [];
     approved?: boolean;
