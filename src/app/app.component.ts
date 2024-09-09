@@ -4,14 +4,16 @@ import { Route, Router } from '@angular/router';
 import { IonMenu, MenuController } from '@ionic/angular';
 import { isSet } from './core/base/base.component';
 import { TranslateService } from '@ngx-translate/core';
+import { HomeService } from './home/home.service';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
-export class AppComponent{
+export class AppComponent {
   authData = JSON.parse(localStorage.getItem('userAuth'))
-   lang = localStorage.getItem('currentLang')
+  lang = localStorage.getItem('currentLang')
+  settings
 
   public appPages = [
     { title: 'Inbox', url: '/folder/inbox', icon: 'mail' },
@@ -22,19 +24,20 @@ export class AppComponent{
     { title: 'Spam', url: '/folder/spam', icon: 'warning' },
   ];
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
-  constructor( @Inject(DOCUMENT) private document: Document, private router :Router ,private translate: TranslateService,
-  private menuController: MenuController) {
+  constructor(@Inject(DOCUMENT) private document: Document, private homeService: HomeService,
+    private router: Router, private translate: TranslateService,
+    private menuController: MenuController) {
     this.getLang()
-
+    this.getSettings()
   }
-   logout(){
+  logout() {
     localStorage.removeItem('userAuth')
     this.router.navigateByUrl('/')
     location.reload()
 
   }
-  moveToLogin(){
-    this.router.navigateByUrl(this.authData?'/appoiments':'/login')
+  moveToLogin() {
+    this.router.navigateByUrl(this.authData ? '/appoiments' : '/login')
   }
   getLang() {
     if (!localStorage.getItem('currentLang')) {
@@ -46,8 +49,21 @@ export class AppComponent{
     const htmlTag = this.document.getElementsByTagName("html")[0] as HTMLHtmlElement;
     htmlTag.dir = lang !== "en" ? "rtl" : "ltr";
   }
-  changeLang(){
+  changeLang() {
     localStorage.setItem('currentLang', this.lang !== "en" ? "en" : "ar")
     location.reload()
+  }
+  getSettings() {
+    const subscription = this.homeService.getMainSettings().subscribe((data) => {
+      if (!isSet(data)) {
+        return
+      }
+      this.settings=data.data.attributes
+      localStorage.setItem('settings', JSON.stringify(this.settings))
+     
+      subscription.unsubscribe()
+    }, error => {
+      subscription.unsubscribe()
+    })
   }
 }

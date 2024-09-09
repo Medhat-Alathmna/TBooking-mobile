@@ -24,7 +24,7 @@
         <ion-button routerLink="/ads" expand="block" style="width: -webkit-fill-available;">
           <ion-label style="padding-left: 5px;" translate>Our Works & Offers</ion-label>
         </ion-button>
-        <ion-button size="large" routerLink="/main" expand="block" style="width: -webkit-fill-available;">
+        <ion-button [disabled]="!setting.booking" size="large" routerLink="/main" expand="block" style="width: -webkit-fill-available;">
           <!-- <ion-icon name="image"></ion-icon> -->
           <ion-label style="padding-left: 5px;" translate>Booking Now !</ion-label>
         </ion-button>

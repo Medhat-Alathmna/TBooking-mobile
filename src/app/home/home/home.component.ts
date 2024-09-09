@@ -1,3 +1,4 @@
+/* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -8,8 +9,10 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class HomeComponent  implements OnInit {
 
+  setting=JSON.parse(localStorage.getItem('settings'))
   constructor(public translates: TranslateService,) { }
 
-  ngOnInit() {}
+  ngOnInit() {    
+  }
 
 }
