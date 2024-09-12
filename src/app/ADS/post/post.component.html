@@ -3,13 +3,12 @@
     <ion-buttons slot="start">
     </ion-buttons>
     <ion-buttons slot="end">
-      <ion-button (click)="dismissModal()">Back
-        <ion-icon name="chevron-back-outline" slot="start"></ion-icon>
+      <ion-button (click)="dismissModal()" translate>Back<ion-icon name="chevron-back-outline" slot="start"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-content color="medium" [fullscreen]="true">
+<ion-content [fullscreen]="true">
 
   <ion-row>
     <ion-label class="head">

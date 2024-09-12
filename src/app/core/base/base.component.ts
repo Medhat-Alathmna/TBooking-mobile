@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { DatePipe } from '@angular/common';
+import { DatePipe, getCurrencySymbol } from '@angular/common';
 import { Router } from '@angular/router';
 import { LoadingController, ToastController, NavController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
@@ -16,6 +16,7 @@ export class BaseComponent implements  OnDestroy {
   subscriptions: Subscription[] = [];
   public loading = false;
   // closeCurrentTime = startOfHour(addMinutes(new Date(), Math.round(new Date().getMinutes() / 15) * 15));
+  cur = JSON.parse(localStorage.getItem('currency'))
 
   userAuth =JSON.parse(localStorage.getItem('userAuth'))?.user
   lang = localStorage.getItem('currentLang')
@@ -106,6 +107,12 @@ export class BaseComponent implements  OnDestroy {
   }
   trans(key: any): any {
     return this.translates?.instant(key)
+  }
+  public getCurrencySymbol(code?: string, format?: 'wide' | 'narrow', locale?: string): string {
+    if(!isSet(format)) {
+      format = 'narrow';
+    }
+    return getCurrencySymbol(code, format, locale);
   }
 }
 export const isSet = (value: any): boolean => {

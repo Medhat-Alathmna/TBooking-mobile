@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { SafePipe } from './safe.pipe';
 import { PostComponent } from './post/post.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 
@@ -20,6 +21,7 @@ export const routes: Routes = [
   imports: [
     CommonModule,
     IonicModule,
+    TranslateModule,
     FormsModule,
     RouterModule.forChild(routes),  ]
 })

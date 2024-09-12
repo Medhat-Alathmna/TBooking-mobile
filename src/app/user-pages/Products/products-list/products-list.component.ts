@@ -5,6 +5,7 @@ import { Products } from 'src/app/modals/products';
 import { ProductsService } from '../products.service';
 import { ProductFormComponent } from '../product-form/product-form.component';
 import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-products-list',
@@ -20,8 +21,8 @@ export class ProductsListComponent extends BaseComponent implements OnInit {
   formMode=false
   constructor( public loadingController: LoadingController,
     private modalController: ModalController,
-     private barcodeScanner: BarcodeScanner,
-     public nav: NavController, private productService: ProductsService) { super(loadingController) }
+     private barcodeScanner: BarcodeScanner,public translates: TranslateService,
+     public nav: NavController, private productService: ProductsService) { super(loadingController,translates) }
 
   async ngOnInit() {
     this.getProducts()    
@@ -102,9 +103,7 @@ export class ProductsListComponent extends BaseComponent implements OnInit {
       this.loading = false
       if (!isSet(results)) {
         return
-      }
-      console.log(results);
-      
+      } 
       if (results?.data?.length ==0) {
         this.presentToast("This product doesn't Exist")
       }else{

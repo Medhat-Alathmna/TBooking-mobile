@@ -39,4 +39,5 @@ export class MainPageService {
     return this.api.get<any[]>(`usersMobile?populate=role&filters[hide][$eq]=false&filters[blocked][$eq]=false&filters[isToday][$eq]=true`);
   }
  
+ 
 }

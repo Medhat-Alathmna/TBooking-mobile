@@ -4,17 +4,17 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-buttons slot="end">
-      <ion-back-button default-href="/"></ion-back-button>
+      <ion-back-button default-href="/" translate >Back</ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-content color="medium" [fullscreen]="true">
+<ion-content  [fullscreen]="true">
   <ion-row>
     <ion-label class="starter"> Welcome to our Works</ion-label>
   </ion-row>
   <ion-row *ngFor="let post of pinPosts">
-    <ion-card style="background-color: #cbcbcb;" *ngFor="let ad of post?.ads, let index=index">
-      <ion-card-content (click)="postForm(post)" style="width: 100%;color: blue;display: flex;min-height: 9rem" *ngIf="index<=0">
+    <ion-card  *ngFor="let ad of post?.ads, let index=index">
+      <ion-card-content (click)="postForm(post)" style="width: 100%;display: flex;min-height: 9rem" *ngIf="index<=0">
         <ion-row style="width: 120%">
           <ion-label> {{lang === 'en'?post?.textEN :post?.textAR}}</ion-label>
 
@@ -31,8 +31,8 @@
     </ion-card>
   </ion-row>
   <ion-row *ngFor="let post of posts">
-    <ion-card style="background-color: #cbcbcb;" *ngFor="let ad of post?.ads, let index=index">
-      <ion-card-content (click)="postForm(post)" style="width: 100%;color: blue;min-height: 9rem;display: flex;
+    <ion-card  *ngFor="let ad of post?.ads, let index=index">
+      <ion-card-content (click)="postForm(post)" style="width: 100%;min-height: 9rem;display: flex;
       flex-direction: column;
       justify-content: space-between" *ngIf="index<=0">
         <ion-row>

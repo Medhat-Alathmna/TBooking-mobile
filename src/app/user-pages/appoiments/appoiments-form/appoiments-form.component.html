@@ -74,7 +74,7 @@
         <ion-card style="margin-left: 0;margin-right: 0;width: -webkit-fill-available;">
           <ion-card-header style="flex-direction: row;justify-content: space-between;">
             <ion-card-title style="width: 70%">{{service.ar}}</ion-card-title>
-            <ion-text style="align-self: center;">{{'Price'|translate}}: {{service.price}} </ion-text>
+            <ion-text style="align-self: center;">{{'Price'|translate}}: {{service.price}} {{getCurrencySymbol(cur.code)}}</ion-text>
           </ion-card-header>
         </ion-card>
       </ion-col>

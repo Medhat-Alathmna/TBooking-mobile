@@ -5,6 +5,7 @@ import { BaseComponent, isSet } from 'src/app/core/base/base.component';
 import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
 
 import { LoadingController, ModalController, ToastController } from '@ionic/angular';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-product-form',
@@ -20,9 +21,9 @@ export class ProductFormComponent extends BaseComponent implements OnInit {
   brands: any[] = []
   medicineTypes: any[] = []
   constructor(private productsService: ProductsService,   
-     private barcodeScanner: BarcodeScanner,
+     private barcodeScanner: BarcodeScanner,public translates: TranslateService,
    public loadingController: LoadingController, private modalController: ModalController,
-    public toastController: ToastController,) { super(loadingController,null, toastController) }
+    public toastController: ToastController,) { super(loadingController,translates, toastController) }
 
   ngOnInit() {
 

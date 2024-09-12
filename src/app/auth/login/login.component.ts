@@ -43,10 +43,10 @@ export class LoginComponent extends BaseComponent implements OnInit {
     this.authService.login(this.email, this.password).subscribe((user: any) => {
       localStorage.setItem('userAuth', JSON.stringify(user))
       this.dismissLoading().then(r => {
-        this.router.navigateByUrl('/');
         setTimeout(() => {
           location.reload()
-        }, 1000);
+        });
+        this.router.navigateByUrl('/');
       });
     }, error => {
       this.dismissLoading()

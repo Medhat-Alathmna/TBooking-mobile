@@ -5,6 +5,8 @@ import { IonMenu, MenuController } from '@ionic/angular';
 import { isSet } from './core/base/base.component';
 import { TranslateService } from '@ngx-translate/core';
 import { HomeService } from './home/home.service';
+
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -13,7 +15,11 @@ import { HomeService } from './home/home.service';
 export class AppComponent {
   authData = JSON.parse(localStorage.getItem('userAuth'))
   lang = localStorage.getItem('currentLang')
+  isDark:boolean = JSON.parse(localStorage.getItem('isDark'))
+  themeMode
   settings
+  paletteToggle:any = false;
+
 
   public appPages = [
     { title: 'Inbox', url: '/folder/inbox', icon: 'mail' },
@@ -29,6 +35,28 @@ export class AppComponent {
     private menuController: MenuController) {
     this.getLang()
     this.getSettings()
+    this.getCurrencies()
+    if (this.isDark==null) {
+      this.paletteToggle=true
+      localStorage.setItem('isDark', this.paletteToggle)
+    }
+    const prefersDark = window.matchMedia(`(prefers-color-scheme: ${this.isDark?'dark':'light'})`);
+    this.initializeDarkPalette(prefersDark.matches);
+    prefersDark.addEventListener('change', (mediaQuery) => this.initializeDarkPalette(mediaQuery.matches));
+   
+  }
+  initializeDarkPalette(isDark) {    
+    this.paletteToggle = isDark;
+    this.toggleDarkPalette(isDark);
+  }
+
+  toggleChange(ev) {        
+    localStorage.setItem('isDark',ev.detail.checked)
+    this.toggleDarkPalette(ev.detail.checked);
+  }
+
+  toggleDarkPalette(shouldAdd) {    
+    document.documentElement.classList.toggle('ion-palette-dark', shouldAdd);
   }
   logout() {
     localStorage.removeItem('userAuth')
@@ -66,4 +94,14 @@ export class AppComponent {
       subscription.unsubscribe()
     })
   }
+
+  getCurrencies() {
+    const subscription = this.homeService.getCurrencies().subscribe((results: any) => {
+      localStorage.setItem('currency',JSON.stringify(results.data.attributes))
+
+        subscription.unsubscribe()
+    }, error => {
+        subscription.unsubscribe()
+    })
+}
 }

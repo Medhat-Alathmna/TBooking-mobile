@@ -5,6 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { ProductFormComponent } from './product-form/product-form.component';
 import { ProductsListComponent } from './products-list/products-list.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 export const routes: Routes = [
   { path: '', component: ProductsListComponent },
@@ -18,6 +19,7 @@ export const routes: Routes = [
     CommonModule,
     IonicModule,
     FormsModule,
+    TranslateModule,
     RouterModule.forChild(routes),
   ]
 })

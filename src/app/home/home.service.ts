@@ -10,6 +10,9 @@ export class HomeService {
   constructor(private api: ApiService) { }
 
   getMainSettings(): Observable<any> {
-    return this.api.get<any>(`/main-settings-mobile`); 
+    return this.api.getGuest<any>(`/main-settings-mobile`); 
+   }
+   getCurrencies(): Observable<any> {
+    return this.api.getGuest<any>(`/currency`); 
    }
 }

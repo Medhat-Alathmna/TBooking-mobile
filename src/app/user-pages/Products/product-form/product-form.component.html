@@ -8,7 +8,7 @@
       <!-- <ion-title>{{updateMode?product.name:'Product'}}</ion-title> -->
       <ion-buttons slot="end">
         <ion-button (click)="updateMode?updateProduct():createProduct()" color="primary">
-          {{updateMode?'Update':'Create'}} </ion-button>
+          {{updateMode?('Update'|translate):('Save'|translate)}} </ion-button>
       </ion-buttons>
     </ion-toolbar>
   </ion-header>
@@ -16,34 +16,34 @@
   <ion-grid>
     <ion-row>
       <ion-col size="12">
-        <ion-input label="Product Name" mode="md" fill="outline" [(ngModel)]="product.name" 
-          labelPlacement="stacked" placeholder="Product"></ion-input>
+        <ion-input [label]="'Product Name'|translate" mode="md" fill="outline" [(ngModel)]="product.name" 
+          labelPlacement="stacked" [placeholder]="'Product Name'|translate"></ion-input>
       </ion-col>
       <ion-col size="12">
-        <ion-input label="Price" mode="md" fill="outline" [(ngModel)]="product.price" type="number" 
+        <ion-input [label]="'Price'|translate" mode="md" fill="outline" [(ngModel)]="product.price" type="number" 
           labelPlacement="stacked" placeholder="Price"></ion-input>
       </ion-col>
       <ion-col size="12">
-        <ion-input label="Stocks" mode="md" fill="outline" [(ngModel)]="product.stocks" 
+        <ion-input [label]="'Stock'|translate" mode="md" fill="outline" [(ngModel)]="product.stocks" 
           labelPlacement="stacked" type="number" placeholder="Stocks"></ion-input>
       </ion-col>
       <ion-col size="12">
-        <ion-input label="Sell Price" mode="md" fill="outline" type="number" [(ngModel)]="product.buyPrice" 
+        <ion-input [label]="'Sell Price'|translate" mode="md" fill="outline" type="number" [(ngModel)]="product.buyPrice" 
           labelPlacement="stacked" placeholder="Sell Price"></ion-input>
       </ion-col>
       <ion-col size="12">
-        <ion-input label="Barcode" mode="md" fill="outline" [(ngModel)]="product.barcode" 
+        <ion-input [label]="'Barcode'|translate" mode="md" fill="outline" [(ngModel)]="product.barcode" 
           labelPlacement="stacked" placeholder="Barcode"></ion-input>
       </ion-col>
       <ion-col size="12">
         <ion-list >
-          <ion-select [(ngModel)]="product.brand" label="Brand" placeholder="Select Brand">
+          <ion-select [(ngModel)]="product.brand" [label]="'Brand'|translate" [placeholder]="'Select Brand'|translate">
             <ion-select-option *ngFor="let brand of brands" [value]="brand.id">{{brand.name}}</ion-select-option>
           </ion-select>
         </ion-list>
       </ion-col>
       <ion-col size="12">
-        <ion-button style="width: -webkit-fill-available;" (click)="scanItem()" color="success">Scan
+        <ion-button style="width: -webkit-fill-available;" (click)="scanItem()" color="success" translate>Scan
           Barcode</ion-button>
       </ion-col>
     </ion-row>

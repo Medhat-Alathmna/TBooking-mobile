@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { LoadingController, ModalController } from '@ionic/angular';
+import { TranslateService } from '@ngx-translate/core';
 import { BaseComponent } from 'src/app/core/base/base.component';
 import { environment } from 'src/environments/environment';
 
@@ -15,7 +16,8 @@ export class PostComponent extends BaseComponent  implements OnInit {
 
   @Input() post:any
 
-  constructor( private modalController: ModalController ) {super() }
+  constructor( private modalController: ModalController
+    ,public loadingController: LoadingController,public translates: TranslateService, ) {super(loadingController,translates,) }
 
   ngOnInit() {}
 
