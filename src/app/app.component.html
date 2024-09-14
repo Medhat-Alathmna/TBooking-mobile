@@ -19,6 +19,10 @@
               <ion-icon style="margin-inline-end: 1rem;" aria-hidden="true" name="calendar-outline"></ion-icon>
               <ion-label translate>Appointments</ion-label>
             </ion-item>
+            <ion-item *ngIf="!authData"  routerLink="/main/my-appo">
+              <ion-icon style="margin-inline-end: 1rem;" aria-hidden="true" name="calendar-outline"></ion-icon>
+              <ion-label>{{'My Appointments'|translate}}</ion-label>
+            </ion-item>
             <ion-item (click)="logout()" *ngIf="authData" lines="none">
               <ion-icon style="margin-inline-end: 1rem;" aria-hidden="true" name="log-out-outline"></ion-icon>
               <ion-label translate>Log Out</ion-label>
@@ -26,6 +30,7 @@
           </ion-menu-toggle>
 
         </ion-list>
+       
         <ion-item (click)="changeLang()">
           <ion-icon style="margin-inline-end: 1rem;" aria-hidden="true" name="earth-outline"></ion-icon>
           <ion-label>{{lang!=='en'?'English':'العربية'}}</ion-label>

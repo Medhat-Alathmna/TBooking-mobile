@@ -6,16 +6,18 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { ServicesComponent } from './services/services.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { MyAppointmentsComponent } from './my-appointments/my-appointments.component';
 
 
 export const routes: Routes = [
   { path: '', component: MainPageComponent },
+  { path: 'my-appo', component: MyAppointmentsComponent },
 
 ];
 
 
 @NgModule({
-  declarations: [MainPageComponent,ServicesComponent],
+  declarations: [MainPageComponent,ServicesComponent,MyAppointmentsComponent],
   imports: [
     CommonModule,
     IonicModule,

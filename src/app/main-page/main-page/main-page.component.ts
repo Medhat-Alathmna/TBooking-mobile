@@ -27,6 +27,8 @@ export class MainPageComponent extends BaseComponent implements OnInit {
 
 
   ngOnInit() {
+    this.getNotfi()
+    console.log(JSON.parse(localStorage.getItem('appointemts')));
     this.appointment.fromDate = new Date().toISOString()
     this.appointment.toDate = new Date().toISOString()
     this.appointment.employee=[]
@@ -37,22 +39,29 @@ export class MainPageComponent extends BaseComponent implements OnInit {
   dismissModal() {
     this.modalController.dismiss();
   }
+   pushToLocalStorageArray(key: string, value: any) {
+    const existing = localStorage.getItem(key);
+    const array = existing ? JSON.parse(existing) : [];
+    array.push(value);
+    localStorage.setItem(key, JSON.stringify(array));
+  }
 
   addAppominet() {
+
     if (!this.selectServices.length) {
       this.presentToast('Please select your employee and then select your services')
       return
     }
     this.appointment.employee.services=this.selectServices
     this.appointment.phone=this.appointment.phone.toString();
-    // this.appointment.phone  = new RegExp(this.appointment.phone.replace(/(\d{3})(\d{3})(\d{3})(\d{3})/, '$1-$2-$3-$4'));
-    // console.log(this.appointment.phone);
     this.appointment.fromDate = new Date(this.appointment.fromDate).toISOString()
     this.appointment.toDate = new Date(this.appointment.toDate).toISOString()
-    const subscription = this.mainPageService.addAppominets(this.appointment).subscribe((data) => {
+    const subscription = this.mainPageService.addAppominets(this.appointment).subscribe((data:any) => {
       if (!isSet(data)) {
         return
       }
+
+      this.pushToLocalStorageArray('appointemts',this.appointment)
       this.presentToast('Booking Created , Please take a look at our Works')
       setTimeout(() => {
         this.router.navigateByUrl('/ads')
@@ -129,5 +138,20 @@ export class MainPageComponent extends BaseComponent implements OnInit {
   }
   removeServices(index){
     this.selectServices.splice(index,1)
+  }
+  getNotfi() {
+   
+    const subscription = this.mainPageService.getNotfi().subscribe((results: any) => {
+      this.loading = false
+
+    console.log(results);
+    
+      subscription.unsubscribe()
+    }, error => {
+      this.loading = false
+      console.log(error);
+      
+      subscription.unsubscribe()
+    })
   }
 }

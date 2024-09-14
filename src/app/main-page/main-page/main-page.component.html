@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button color="primary" [disabled]="form?.invalid " (click)="addAppominet()" translate>Send</ion-button>
+      <ion-button color="primary"(click)="addAppominet()" translate>Send</ion-button>
     </ion-buttons>
     <ion-buttons slot="end">
       <ion-back-button default-href="#"></ion-back-button>
@@ -29,7 +29,7 @@
           type="text" labelPlacement="stacked"></ion-input>
 
         <ion-input mode="md" required="true" style="margin-bottom: 5px" inputmode="tel" [maxlength]="15" fill="outline"
-          name="phone" [label]="'WhatsApp No.'|translate" [(ngModel)]="appointment.phone" placeholder="962-" type="tel"
+          name="phone" [label]="'WhatsApp No.'|translate" [(ngModel)]="appointment.phone" placeholder="962-999-999-999" type="tel"
           labelPlacement="stacked"></ion-input>
 
         <ion-input mode="md" fill="outline" [label]="'Address'|translate" name="address"
@@ -74,7 +74,7 @@
         </ion-list>
       </ion-col>
     </ion-row>
-    <ion-row *ngIf="selectServices.length" style="justify-content: space-between;">
+    <ion-row *ngIf="selectServices.length" style="justify-content: space-between;padding-inline: 0.5rem">
       <ion-label style="font-size: 1.5rem;" translate>Services</ion-label>
       <ion-label style="display: flex;align-items: center;" translate>{{'Total'|translate}}:
         {{getTotalPrice().serviceAmount}} {{getCurrencySymbol(cur.code)}}</ion-label>

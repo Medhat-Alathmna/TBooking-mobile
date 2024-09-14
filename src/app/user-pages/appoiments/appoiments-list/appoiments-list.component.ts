@@ -137,4 +137,33 @@ export class AppoimentsListComponent extends BaseComponent implements OnInit {
       event.target.complete();
     }, 2000);
   }
+  search(data){
+    const query = data.toLowerCase();
+    this.getAppointemtByNumber(query)
+    // this.products = this.products.filter((d) => d.attributes.name.toLowerCase().indexOf(query) > -1);    
+  }
+  async getAppointemtByNumber(number){
+    this.unapprovedAppoit = []
+    this.approvedAppointments = []
+    this.completedAppoit = []
+    await this.showLoading('Appoiments Loading')
+    const subscription = this.appoimentsServices.getAppominets(number).subscribe((results: any) => {
+      if (!isSet(results)) {
+        return
+      }
+      let objects: any[] = []
+      objects = results.data
+      this.unapprovedAppoit = objects.filter(x => x.attributes.approved == false )
+      this.approvedAppointments = objects.filter(x => x.attributes.approved == true )
+      this.completedAppoit = objects.filter(x => x.attributes.status === 'Completed')
+      this.listHeader = this.trans('Approved Appointments')
+      this.currentAppoiments = this.approvedAppointments
+      this.class = 'Unpaid'
+      this.dismissLoading()
+      subscription.unsubscribe()
+    }, error => {
+      this.dismissLoading()
+      subscription.unsubscribe()
+    })
+  }
 }

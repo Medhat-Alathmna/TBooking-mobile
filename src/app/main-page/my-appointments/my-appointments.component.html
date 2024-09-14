@@ -7,7 +7,6 @@
       <ion-text slot="end">
         <ion-icon style="margin-inline-end: 1rem;" id="open-modal2" aria-hidden="true" name="calendar-outline"></ion-icon>
 
-        <ion-icon (click)="presentActionSheet()" name="ellipsis-vertical-outline"></ion-icon>
 
         <!-- Total: {{currentAppoiments.length}} -->
 
@@ -16,19 +15,11 @@
     </ion-toolbar>
 
   </ion-header>
-  <ion-refresher (ionRefresh)="handleRefresh($event)"  slot="fixed">
-    <ion-refresher-content refreshingSpinner="circles"></ion-refresher-content>
-  </ion-refresher>
-  <ion-searchbar animated="true" (ionClear)="getTodayAppo(null)" debounce="3000" (keyup.enter)="search($event.target.value)" [placeholder]="'Search in all appointments'|translate"></ion-searchbar>
-  <ion-row style="flex-direction: column;
-    align-items: center;">
-    <ion-label [class]="class">{{listHeader |translate}}</ion-label>
-    <ion-label style="padding-top: 0.5rem;font-weight: bolder;font-size: larger;">
-      {{currentDateGlobal | date:'YYYY-MM-dd '}}</ion-label>
-  </ion-row>
+ 
+  <ion-searchbar animated="true"  debounce="3000" [placeholder]="'Search in all appointments'|translate"></ion-searchbar>
 
 
-  <ion-list *ngFor="let appointment of currentAppoiments" style="background-color: transparent;">
+  <ion-list *ngFor="let appointment of appointments" style="background-color: transparent;">
     <ion-card (click)="appoimentForm(appointment)" style="margin-left: 0;margin-right: 0;">
       <ion-card-header style="flex-direction: row;
     justify-content: space-evenly;">

@@ -38,6 +38,8 @@ export class MainPageService {
   getEmployee(): Observable<any[]> {
     return this.api.get<any[]>(`usersMobile?populate=role&filters[hide][$eq]=false&filters[blocked][$eq]=false&filters[isToday][$eq]=true`);
   }
- 
+  getNotfi(): Observable<any> {
+    return this.api.getGuest<any>(`notfi`);
+  }
  
 }
