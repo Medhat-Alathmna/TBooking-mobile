@@ -34,7 +34,6 @@
 
         <ion-input mode="md" fill="outline" [label]="'Address'|translate" name="address"
           [(ngModel)]="appointment.address" placeholder="Amman" type="text" labelPlacement="stacked"></ion-input>
-
       </ion-row>
     </form>
 
@@ -76,7 +75,7 @@
     </ion-row>
     <ion-row *ngIf="selectServices.length" style="justify-content: space-between;padding-inline: 0.5rem">
       <ion-label style="font-size: 1.5rem;" translate>Services</ion-label>
-      <ion-label style="display: flex;align-items: center;" translate>{{'Total'|translate}}:
+      <ion-label style="display: flex;align-items: center;">{{'Total'|translate}}:
         {{getTotalPrice().serviceAmount}} {{getCurrencySymbol(cur.code)}}</ion-label>
     </ion-row>
     <ion-row *ngFor="let service of selectServices let i=index">

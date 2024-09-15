@@ -58,6 +58,10 @@
 .ion-palette-dark.md {
   --ion-item-background: #1c1c1d;
 }
+::ng-deep .label-text-wrapper{
+  display: flex !important;
+  align-self: center !important;
+}
 .Completed{
     background: #c8e6c9;
     color: #256029;

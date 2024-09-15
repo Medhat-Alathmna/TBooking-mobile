@@ -34,7 +34,7 @@ export class AppoimentsListComponent extends BaseComponent implements OnInit {
     private actionSheetCtrl: ActionSheetController, public translate?: TranslateService,) { super(loadingController, translate) }
 
   ngOnInit() {
-    this.getTodayAppo(null)
+    this.getTodayAppo()
 
   }
 
@@ -84,7 +84,7 @@ export class AppoimentsListComponent extends BaseComponent implements OnInit {
     this.unapprovedAppoit = []
     this.approvedAppointments = []
     this.completedAppoit = []
-    await this.showLoading('Appoiments Loading')
+    await this.showLoading(this.trans('Appoiments Loading'))
     const subscription = this.appoimentsServices.getTodayAppominets(this.currentDateGlobal).subscribe((results: any) => {
       if (!isSet(results)) {
         return
@@ -124,7 +124,7 @@ export class AppoimentsListComponent extends BaseComponent implements OnInit {
   async appoimentForm(appointment?) {
     const modal = await this.modalController.create({
       component: AppoimentsFormComponent,
-      componentProps: { appointment },
+      componentProps: { appointment, isUser:true },
     });
     console.log(appointment);
 

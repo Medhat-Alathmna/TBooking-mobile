@@ -19,7 +19,7 @@
   <ion-refresher (ionRefresh)="handleRefresh($event)"  slot="fixed">
     <ion-refresher-content refreshingSpinner="circles"></ion-refresher-content>
   </ion-refresher>
-  <ion-searchbar animated="true" (ionClear)="getTodayAppo(null)" debounce="3000" (keyup.enter)="search($event.target.value)" [placeholder]="'Search in all appointments'|translate"></ion-searchbar>
+  <ion-searchbar animated="true" (ionClear)="getTodayAppo()" debounce="3000" (keyup.enter)="search($event.target.value)" [placeholder]="'Search in all appointments'|translate"></ion-searchbar>
   <ion-row style="flex-direction: column;
     align-items: center;">
     <ion-label [class]="class">{{listHeader |translate}}</ion-label>

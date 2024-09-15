@@ -36,7 +36,7 @@ export class AppComponent {
     this.getLang()
     this.getSettings()
     this.getCurrencies()
-    if (this.isDark==null) {
+    if (!isSet(this.isDark)) {
       this.paletteToggle=true
       localStorage.setItem('isDark', this.paletteToggle)
     }

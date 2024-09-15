@@ -60,8 +60,7 @@ export class MainPageComponent extends BaseComponent implements OnInit {
       if (!isSet(data)) {
         return
       }
-
-      this.pushToLocalStorageArray('appointemts',this.appointment)
+      this.pushToLocalStorageArray('appointemts',data.createAppo)
       this.presentToast('Booking Created , Please take a look at our Works')
       setTimeout(() => {
         this.router.navigateByUrl('/ads')
@@ -107,7 +106,7 @@ export class MainPageComponent extends BaseComponent implements OnInit {
         en: data?.en,
         price: data?.price
       })
-
+this.getTotalPrice()
       this.mainPageService.addServicesToForm.next(null);
     }, async (error) => {
       await this.presentErrorToast();
@@ -118,7 +117,8 @@ export class MainPageComponent extends BaseComponent implements OnInit {
     let serviceAmount: number = 0
     this.selectServices?.map(rs=>{
       serviceAmount +=rs.price
-    })    
+    })   
+      
     return {serviceAmount}
   }
   selectDate(value) {
