@@ -77,6 +77,7 @@ export class ProductFormComponent extends BaseComponent implements OnInit {
       }
       this.dismissLoading()
       this.presentToast('The Product Created')
+      this.dismissModal()
       subscription.unsubscribe()
     }, error => {
       this.dismissLoading()
@@ -98,7 +99,7 @@ export class ProductFormComponent extends BaseComponent implements OnInit {
       this.dismissModal()
       subscription.unsubscribe()
     }, error => {
-      console.log(error.error.error);
+      console.log(error.error.error.details.message);
       
      
       this.dismissLoading()

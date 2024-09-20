@@ -83,9 +83,7 @@ export class BaseComponent implements  OnDestroy {
     await this.loadingIndicator.present();
   }
   public async dismissLoading() {
-    console.log('dismissLoading');
     await this.loadingIndicator.dismiss();
-
     this.loading = false;
 
   }

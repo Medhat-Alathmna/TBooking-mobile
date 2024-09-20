@@ -7,46 +7,52 @@
       </ion-buttons>
       <!-- <ion-title>{{updateMode?product.name:'Product'}}</ion-title> -->
       <ion-buttons slot="end">
-        <ion-button (click)="updateMode?updateProduct():createProduct()" color="primary">
+        <ion-button (click)="updateMode?updateProduct():createProduct()" [disabled]="form.invalid" color="primary">
           {{updateMode?('Update'|translate):('Save'|translate)}} </ion-button>
       </ion-buttons>
     </ion-toolbar>
   </ion-header>
 
   <ion-grid>
+    <form #form="ngForm" body>
+
     <ion-row>
-      <ion-col size="12">
-        <ion-input [label]="'Product Name'|translate" mode="md" fill="outline" [(ngModel)]="product.name" 
-          labelPlacement="stacked" [placeholder]="'Product Name'|translate"></ion-input>
-      </ion-col>
-      <ion-col size="12">
-        <ion-input [label]="'Price'|translate" mode="md" fill="outline" [(ngModel)]="product.price" type="number" 
-          labelPlacement="stacked" placeholder="Price"></ion-input>
-      </ion-col>
-      <ion-col size="12">
-        <ion-input [label]="'Stock'|translate" mode="md" fill="outline" [(ngModel)]="product.stocks" 
-          labelPlacement="stacked" type="number" placeholder="Stocks"></ion-input>
-      </ion-col>
-      <ion-col size="12">
-        <ion-input [label]="'Sell Price'|translate" mode="md" fill="outline" type="number" [(ngModel)]="product.buyPrice" 
-          labelPlacement="stacked" placeholder="Sell Price"></ion-input>
-      </ion-col>
-      <ion-col size="12">
-        <ion-input [label]="'Barcode'|translate" mode="md" fill="outline" [(ngModel)]="product.barcode" 
-          labelPlacement="stacked" placeholder="Barcode"></ion-input>
-      </ion-col>
-      <ion-col size="12">
-        <ion-list >
-          <ion-select [(ngModel)]="product.brand" [label]="'Brand'|translate" [placeholder]="'Select Brand'|translate">
-            <ion-select-option *ngFor="let brand of brands" [value]="brand.id">{{brand.name}}</ion-select-option>
-          </ion-select>
-        </ion-list>
-      </ion-col>
+
+        <ion-col size="12">
+          <ion-input name="name" [required]="true" min="0" [label]="'Product Name'|translate" mode="md" fill="outline" [(ngModel)]="product.name"
+            labelPlacement="stacked" [placeholder]="'Product Name'|translate"></ion-input>
+        </ion-col>
+        <ion-col size="12">
+          <ion-input [label]="'Price'|translate" [required]="true" name="price" min="0" mode="md" fill="outline" [(ngModel)]="product.price" type="number"
+            labelPlacement="stacked" placeholder="Price"></ion-input>
+        </ion-col>
+        <ion-col size="12">
+          <ion-input [label]="'Stock'|translate" [required]="true" mode="md" name="stocks" min="0" fill="outline" [(ngModel)]="product.stocks"
+            labelPlacement="stacked" type="number" placeholder="Stocks"></ion-input>
+        </ion-col>
+        <ion-col size="12">
+          <ion-input [label]="'Sell Price'|translate" min="0" [required]="true" name="sell" mode="md" fill="outline" type="number"
+            [(ngModel)]="product.buyPrice" labelPlacement="stacked" placeholder="Sell Price"></ion-input>
+        </ion-col>
+        <ion-col size="12">
+          <ion-input [label]="'Barcode'|translate" name="barcode" mode="md" fill="outline" [(ngModel)]="product.barcode"
+            labelPlacement="stacked" placeholder="Barcode"></ion-input>
+        </ion-col>
+        <ion-col size="12">
+          <ion-list>
+            <ion-select name="brand" [(ngModel)]="product.brand" [label]="'Brand'|translate"
+              [placeholder]="'Select Brand'|translate">
+              <ion-select-option *ngFor="let brand of brands" [value]="brand.id">{{brand.name}}</ion-select-option>
+            </ion-select>
+          </ion-list>
+        </ion-col>
+
       <ion-col size="12">
         <ion-button style="width: -webkit-fill-available;" (click)="scanItem()" color="success" translate>Scan
           Barcode</ion-button>
       </ion-col>
     </ion-row>
+  </form>
 
 
 
