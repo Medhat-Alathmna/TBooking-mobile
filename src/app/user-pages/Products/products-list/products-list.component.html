@@ -5,17 +5,17 @@
         <ion-back-button (click)="dismissModal()" default-href="#"></ion-back-button>
       </ion-buttons>
       <ion-title translate>Products</ion-title>
-      <ion-text slot="end" >
+      <ion-text slot="end">
         {{'Total'|translate}}: {{total}}
       </ion-text>
     </ion-toolbar>
 
   </ion-header>
   <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
-    <ion-refresher-content       refreshingSpinner="circles"
-    ></ion-refresher-content>
+    <ion-refresher-content refreshingSpinner="circles"></ion-refresher-content>
   </ion-refresher>
-  <ion-searchbar animated="true" (ionClear)="getProducts()" [placeholder]="'Product Name'|translate" (ionChange)="search($event.target.value)"></ion-searchbar>
+  <ion-searchbar animated="true" (ionClear)="getProducts()" [placeholder]="'Product Name'|translate"
+    (ionChange)="search($event.target.value)"></ion-searchbar>
 
 
   <ion-list *ngFor="let product of products" style="background-color: transparent;">
@@ -30,7 +30,8 @@
               <ion-text>{{'Price'|translate}}: {{product.attributes.price}} {{getCurrencySymbol(cur.code)}}</ion-text>
             </ion-col>
             <ion-col style="text-align: end;" size="6">
-              <ion-text [style]="product.attributes.stocks <= 0?'color:red':''">{{'Stock'|translate}}: {{product.attributes.stocks}}</ion-text>
+              <ion-text [style]="product.attributes.stocks <= 0?'color:red':''">{{'Stock'|translate}}:
+                {{product.attributes.stocks}}</ion-text>
             </ion-col>
           </ion-row>
         </ion-grid>

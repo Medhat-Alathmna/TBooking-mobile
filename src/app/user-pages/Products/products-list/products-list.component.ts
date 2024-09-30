@@ -30,7 +30,7 @@ export class ProductsListComponent extends BaseComponent implements OnInit {
   }
 
   async getProducts(pageNum?: number, query?: any) {
-    await this.showLoading('Fetching Products')
+    await this.showLoading(this.trans('Loading Products'))
     const subscription = this.productService.getlist('products', pageNum, 99999, query).subscribe((results: any) => {
       this.loading = false
       if (!isSet(results)) {
@@ -98,13 +98,13 @@ export class ProductsListComponent extends BaseComponent implements OnInit {
   }
 
   async getProductByBarcode(barcode): Promise<void> {
-    await this.showLoading('Fetching Product')
+    await this.showLoading(this.trans('Loading'))
     const subscription = this.productService.getProductByBarcode(barcode).subscribe((results: any) => {
       this.loading = false
       if (!isSet(results)) {
         return
       } 
-      if (results?.data?.length ==0) {
+      if (!results?.data?.length) {
         this.presentToast("This product doesn't Exist")
       }else{
         this.products = results.data
