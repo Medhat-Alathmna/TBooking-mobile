@@ -7,8 +7,10 @@
       </ion-buttons>
       <!-- <ion-title>{{updateMode?product.name:'Product'}}</ion-title> -->
       <ion-buttons slot="end">
-        <ion-button (click)="updateMode?updateProduct():createProduct()" [disabled]="form.invalid" color="primary">
-          {{updateMode?('Update'|translate):('Save'|translate)}} </ion-button>
+        <ion-button *ngIf="permissionService.hasPermission('Products', 'update')&&updateMode" (click)="updateProduct()" [disabled]="form.invalid" color="primary">
+          {{'Update'|translate}} </ion-button>
+        <ion-button *ngIf="permissionService.hasPermission('Products', 'create')&& !updateMode" (click)="createProduct()" [disabled]="form.invalid" color="primary">
+          {{'Save'|translate}} </ion-button>
       </ion-buttons>
     </ion-toolbar>
   </ion-header>

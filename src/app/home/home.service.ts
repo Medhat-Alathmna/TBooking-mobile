@@ -15,4 +15,7 @@ export class HomeService {
    getCurrencies(): Observable<any> {
     return this.api.getGuest<any>(`/currency`); 
    }
+   getMe(): Observable<any[]> {
+    return this.api.get<any[]>(`users/me?populate=*`);
+  }
 }

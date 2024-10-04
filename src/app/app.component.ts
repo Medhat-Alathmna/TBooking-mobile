@@ -5,6 +5,7 @@ import { IonMenu, MenuController } from '@ionic/angular';
 import { isSet } from './core/base/base.component';
 import { TranslateService } from '@ngx-translate/core';
 import { HomeService } from './home/home.service';
+import { PermissionService } from './core/permission.service';
 
 
 @Component({
@@ -15,47 +16,42 @@ import { HomeService } from './home/home.service';
 export class AppComponent {
   authData = JSON.parse(localStorage.getItem('userAuth'))
   lang = localStorage.getItem('currentLang')
-  isDark:boolean = JSON.parse(localStorage.getItem('isDark'))
+  isDark: boolean = JSON.parse(localStorage.getItem('isDark'))
   themeMode
   settings
-  paletteToggle:any = false;
+  paletteToggle: any = false;
 
 
-  public appPages = [
-    { title: 'Inbox', url: '/folder/inbox', icon: 'mail' },
-    { title: 'Outbox', url: '/folder/outbox', icon: 'paper-plane' },
-    { title: 'Our Site', url: '/folder/favorites', icon: 'heart' },
-    { title: 'Archived', url: '/folder/archived', icon: 'archive' },
-    { title: 'Trash', url: '/folder/trash', icon: 'trash' },
-    { title: 'Spam', url: '/folder/spam', icon: 'warning' },
-  ];
-  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
-  constructor(@Inject(DOCUMENT) private document: Document, private homeService: HomeService,
+ 
+  constructor(@Inject(DOCUMENT) private document: Document, private homeService: HomeService,public permissionService:PermissionService,
     private router: Router, private translate: TranslateService,
     private menuController: MenuController) {
+      if (isSet(this.authData)) {
+        this.getMe()
+      }
     this.getLang()
     this.getSettings()
     this.getCurrencies()
     if (!isSet(this.isDark)) {
-      this.paletteToggle=true
+      this.paletteToggle = true
       localStorage.setItem('isDark', this.paletteToggle)
     }
-    const prefersDark = window.matchMedia(`(prefers-color-scheme: ${this.isDark?'dark':'light'})`);
+    const prefersDark = window.matchMedia(`(prefers-color-scheme: ${this.isDark ? 'dark' : 'light'})`);
     this.initializeDarkPalette(prefersDark.matches);
     prefersDark.addEventListener('change', (mediaQuery) => this.initializeDarkPalette(mediaQuery.matches));
-   
+
   }
-  initializeDarkPalette(isDark) {    
+  initializeDarkPalette(isDark) {
     this.paletteToggle = isDark;
     this.toggleDarkPalette(isDark);
   }
 
-  toggleChange(ev) {        
-    localStorage.setItem('isDark',ev.detail.checked)
+  toggleChange(ev) {
+    localStorage.setItem('isDark', ev.detail.checked)
     this.toggleDarkPalette(ev.detail.checked);
   }
 
-  toggleDarkPalette(shouldAdd) {    
+  toggleDarkPalette(shouldAdd) {
     document.documentElement.classList.toggle('ion-palette-dark', shouldAdd);
   }
   logout() {
@@ -65,7 +61,7 @@ export class AppComponent {
 
   }
   moveToLogin() {
-    this.router.navigateByUrl(this.authData ? '/appoiments' : '/login')
+    this.router.navigateByUrl(this.authData ? '/' : '/login')
   }
   getLang() {
     if (!localStorage.getItem('currentLang')) {
@@ -86,9 +82,9 @@ export class AppComponent {
       if (!isSet(data)) {
         return
       }
-      this.settings=data.data.attributes
+      this.settings = data.data.attributes
       localStorage.setItem('settings', JSON.stringify(this.settings))
-     
+
       subscription.unsubscribe()
     }, error => {
       subscription.unsubscribe()
@@ -97,11 +93,21 @@ export class AppComponent {
 
   getCurrencies() {
     const subscription = this.homeService.getCurrencies().subscribe((results: any) => {
-      localStorage.setItem('currency',JSON.stringify(results.data.attributes))
+      localStorage.setItem('currency', JSON.stringify(results.data.attributes))
 
-        subscription.unsubscribe()
+      subscription.unsubscribe()
     }, error => {
-        subscription.unsubscribe()
+      subscription.unsubscribe()
     })
-}
+  }
+
+  getMe() {
+    const subscription = this.homeService.getMe().subscribe(async (user: any) => {
+      sessionStorage.setItem('prev',JSON.stringify(user.privilege.pages))
+   await   this.permissionService.setPermissions(user.privilege.pages);
+      subscription.unsubscribe()
+    }, error => {
+      subscription.unsubscribe()
+    })
+  }
 }
