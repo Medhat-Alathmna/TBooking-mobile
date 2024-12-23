@@ -84,7 +84,7 @@ export class AppoimentsListComponent extends BaseComponent implements OnInit {
     this.unapprovedAppoit = []
     this.approvedAppointments = []
     this.completedAppoit = []
-    await this.showLoading(this.trans('Appoiments Loading'))
+    await this.showLoading('Appoiments Loading')
     const subscription = this.appoimentsServices.getTodayAppominets(this.currentDateGlobal).subscribe((results: any) => {
       if (!isSet(results)) {
         return

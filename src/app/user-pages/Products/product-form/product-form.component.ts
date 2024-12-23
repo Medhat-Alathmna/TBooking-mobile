@@ -71,14 +71,14 @@ export class ProductFormComponent extends BaseComponent implements OnInit {
 
   async createProduct() {
     await this.showLoading('Creating Product')
-
     const subscription = this.productsService.createProduct(this.product).subscribe((data) => {
       if (!isSet(data)) {
         return
       }
       this.dismissLoading()
-      this.presentToast('The Product Created')
+      this.presentToast('The Product has been created')
       this.dismissModal()
+      this.productsService.refresh.next(true)
       subscription.unsubscribe()
     }, error => {
       this.dismissLoading()
@@ -96,8 +96,9 @@ export class ProductFormComponent extends BaseComponent implements OnInit {
       }
       this.loading = false
       this.dismissLoading()
-      this.presentToast('The Product Updated')
+      this.presentToast('The Product has been updated')
       this.dismissModal()
+      this.productsService.refresh.next(true)
       subscription.unsubscribe()
     }, error => {
       console.log(error.error.error.details.message);
@@ -126,17 +127,13 @@ export class ProductFormComponent extends BaseComponent implements OnInit {
   async getProductByBarcode(barcode): Promise<void> {
     await this.showLoading('Checking Product')
     const subscription = this.productsService.getProductByBarcode(barcode).subscribe((results: any) => {
-      console.log(results);
-
       if (!isSet(results)) {
         return
       }
-
       if (results?.data?.length) {
-        this.presentToast("This product alredy existed")
+        this.presentToast("This product already existed")
       }else{
         this.product.barcode=barcode
-
       }
       this.dismissLoading()
       subscription.unsubscribe()

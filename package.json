@@ -22,6 +22,7 @@
     "@angular/platform-browser-dynamic": "^18.0.0",
     "@angular/router": "^18.0.0",
     "@awesome-cordova-plugins/barcode-scanner": "^6.8.0",
+    "@capacitor/android": "^6.2.0",
     "@capacitor/app": "6.0.1",
     "@capacitor/core": "6.1.2",
     "@capacitor/haptics": "6.0.1",
@@ -32,7 +33,10 @@
     "@ngx-translate/http-loader": "^8.0.0",
     "date-fns": "^3.6.0",
     "ionicons": "^7.0.0",
+    "jetifier": "^2.0.0",
     "moment": "^2.30.1",
+    "onesignal-cordova-plugin": "^5.2.8",
+    "phonegap-plugin-barcodescanner": "^8.1.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.2"

@@ -6,6 +6,7 @@ import { BaseComponent, isSet } from 'src/app/core/base/base.component';
 import { ServicesComponent } from '../services/services.component';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import OneSignal from 'onesignal-cordova-plugin';
 
 
 @Component({
@@ -142,10 +143,7 @@ this.getTotalPrice()
   getNotfi() {
    
     const subscription = this.mainPageService.getNotfi().subscribe((results: any) => {
-      this.loading = false
-
-    console.log(results);
-    
+      this.loading = false    
       subscription.unsubscribe()
     }, error => {
       this.loading = false

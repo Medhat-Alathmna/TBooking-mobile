@@ -26,18 +26,17 @@ export class ProductsListComponent extends BaseComponent implements OnInit {
 
   async ngOnInit() {
     this.getProducts()    
+    
 
   }
 
   async getProducts(pageNum?: number, query?: any) {
-    await this.showLoading(this.trans('Loading Products'))
+    await this.showLoading('Loading Products')
     const subscription = this.productService.getlist('products', pageNum, 99999, query).subscribe((results: any) => {
       this.loading = false
       if (!isSet(results)) {
         return
       }
-      console.log(results);
-
       const clone = results.data
       this.total = results.meta.pagination.total
       if (!isSet(this.products)) {
@@ -75,6 +74,16 @@ export class ProductsListComponent extends BaseComponent implements OnInit {
       subscription.unsubscribe()
     })
   }
+  refresh(){
+  const sub=  this.productService.refreshEmitter.subscribe((res)=>{
+    if(!res){
+      return
+    }
+      this.getProducts()
+      this.productService.refresh.next(null)
+    })
+    this.subscriptions.push(sub)
+  }
 
   async productForm(product?) {
     const modal = await this.modalController.create({
@@ -98,7 +107,7 @@ export class ProductsListComponent extends BaseComponent implements OnInit {
   }
 
   async getProductByBarcode(barcode): Promise<void> {
-    await this.showLoading(this.trans('Loading'))
+    await this.showLoading('Loading')
     const subscription = this.productService.getProductByBarcode(barcode).subscribe((results: any) => {
       this.loading = false
       if (!isSet(results)) {
@@ -107,8 +116,7 @@ export class ProductsListComponent extends BaseComponent implements OnInit {
       if (!results?.data?.length) {
         this.presentToast("This product doesn't Exist")
       }else{
-        this.products = results.data
-        this.total = results.meta.pagination.total
+        this.productForm(results.data[0])
       }
      
 
@@ -134,4 +142,5 @@ export class ProductsListComponent extends BaseComponent implements OnInit {
     const query = data.toLowerCase();
     this.products = this.products.filter((d) => d.attributes.name.toLowerCase().indexOf(query) > -1);    
   }
+
 }

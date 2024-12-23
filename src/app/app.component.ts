@@ -41,6 +41,7 @@ export class AppComponent {
     prefersDark.addEventListener('change', (mediaQuery) => this.initializeDarkPalette(mediaQuery.matches));
 
   }
+
   initializeDarkPalette(isDark) {
     this.paletteToggle = isDark;
     this.toggleDarkPalette(isDark);
@@ -107,7 +108,9 @@ export class AppComponent {
    await   this.permissionService.setPermissions(user.privilege.pages);
       subscription.unsubscribe()
     }, error => {
+      this.logout()
       subscription.unsubscribe()
     })
   }
+
 }

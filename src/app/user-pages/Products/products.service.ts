@@ -9,8 +9,8 @@ import { Products } from 'src/app/modals/products';
 })
 export class ProductsService {
 
-  public product: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-  public productEmitter: Observable<any> = this.product.asObservable();
+  public refresh: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public refreshEmitter: Observable<any> = this.refresh.asObservable();
   queryFilters: any[] = [];
 
   userAuth = JSON.parse(localStorage.getItem('userAuth'))?.user

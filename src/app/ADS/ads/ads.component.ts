@@ -28,7 +28,7 @@ export class AdsComponent extends BaseComponent  implements OnInit {
   }
 
   async getPosts() {
-    await  this.showLoading(this.trans('Loading Posts'))
+    await  this.showLoading('Loading Posts')
     const subscription = this.adsServices.getPosts().subscribe((results: any) => {
       if (!isSet(results)) {
         return

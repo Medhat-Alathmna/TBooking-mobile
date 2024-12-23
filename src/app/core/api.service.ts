@@ -123,7 +123,7 @@ export class ApiService {
   }
   private getHeadersGuest() {
     const headers = new HttpHeaders({
-      Authorization: `Bearer ffced6f5a370d3e08b3edb9827b32ed81146c03c99b5ad4d59de26b0a61b6ecee7759b2be7286f03461df49d70a655badf0ecf2632e67978993c441318fda0c3e5daa08e6ad910c97bb087f0d37783721f4ad870f1ce3c63bfa7cd36afc79ba096119538014d8fcc0a516904291bfdacb4cc078d21a934caaec84fc6486fd3dd`,
+      Authorization: `Bearer 0fa49ce512ccd8a26da8f37242103941ada332b7cfd237b20a78901e052c4cf55da7b1319929467a2cb8218cb7f634b42a73a87fb4982c12a41891265b47473bc96609e85b8d9d1e97c5624ea26553c57a81b4a20404ab8d3af0791a5082408b5c3ff6ea653ca2486de3991eba8d982be2fdddaacba0e2d36639aebeb4bd3f15`,
       Accept: 'application/json'
         });
 

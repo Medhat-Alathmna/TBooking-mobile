@@ -74,7 +74,7 @@ export class BaseComponent implements  OnDestroy {
   public async showLoading(message?) {
     this.loading = true;
     this.loadingIndicator = await this.loadingController.create({
-      message: `${message}...`
+      message: `${this.trans(message)}...`
     }).catch(err=>{
       console.log(err);
       this.presentToast(err);
@@ -90,7 +90,7 @@ export class BaseComponent implements  OnDestroy {
 
   public async presentToast(msg: string = '') {
     const toast = await this.toastController.create({
-      message:msg? `${msg}`:'Unknown Error',
+      message:msg? `${this.trans(msg)}`:'Unknown Error',
             duration: 4000
     });
     await toast.present();
