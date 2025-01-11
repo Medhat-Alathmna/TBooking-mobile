@@ -9,7 +9,7 @@ const routes: Routes = [
     // canActivate:[AuthGuard],
     children: [
       { path: '', loadChildren: () => import('./home/home.module').then(m => m.HomeModule) },
-      { path: 'main', loadChildren: () => import('./main-page/main-page.module').then(m => m.MainPageModule) },
+      { path: 'booking', loadChildren: () => import('./booking-page/booking-page.module').then(m => m.BookingPageModule) },
       { path: 'ads', loadChildren: () => import('./ADS/ads.module').then(m => m.AdsModule) },
       { path: 'appoiments',canActivate:[AuthGuard], loadChildren: () => import('./user-pages/appoiments/appoiments.module').then(m => m.AppoimentsModule) },
       { path: 'products',canActivate:[AuthGuard], loadChildren: () => import('./user-pages/Products/products.module').then(m => m.ProductsModule) },

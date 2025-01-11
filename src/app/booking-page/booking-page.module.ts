@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MainPageComponent } from './main-page/main-page.component';
+import { BookingPageComponent } from './booking-page/booking-page.component';
 import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
@@ -10,14 +10,14 @@ import { MyAppointmentsComponent } from './my-appointments/my-appointments.compo
 
 
 export const routes: Routes = [
-  { path: '', component: MainPageComponent },
+  { path: '', component: BookingPageComponent },
   { path: 'my-appo', component: MyAppointmentsComponent },
 
 ];
 
 
 @NgModule({
-  declarations: [MainPageComponent,ServicesComponent,MyAppointmentsComponent],
+  declarations: [BookingPageComponent,ServicesComponent,MyAppointmentsComponent],
   imports: [
     CommonModule,
     IonicModule,
@@ -25,4 +25,4 @@ export const routes: Routes = [
     FormsModule,
     RouterModule.forChild(routes),  ]
 })
-export class MainPageModule { }
+export class BookingPageModule { }

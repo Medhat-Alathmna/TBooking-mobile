@@ -8,6 +8,7 @@ import { ApiService } from '../core/api.service';
 })
 export class MainPageService {
 
+ authData = JSON.parse(localStorage.getItem('userAuth'))?.user
 
   public addServicesToForm: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public addServicesToFormEmitter: Observable<any> = this.addServicesToForm.asObservable();
@@ -27,8 +28,10 @@ export class MainPageService {
       middleName: appointment.middleName,
       lastName: appointment.lastName,
       phone: appointment.phone,
-
-
+      approved:this.authData?true:false,
+      deposit:this.authData?appointment.deposit:0,
+      appoBy:this.authData? this.authData.username:null,
+      createBy: this.authData?this.authData.username:'Mobile User',
     }
     return this.api.post<Appointment>('/booking', body);
   }

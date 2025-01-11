@@ -28,6 +28,10 @@
           [label]="'Last Name'|translate" [(ngModel)]="appointment.lastName" [placeholder]="'Last Name'|translate"
           type="text" labelPlacement="stacked"></ion-input>
 
+        <ion-input *ngIf='userAuth' mode="md" required="true" style="margin-bottom: 5px" [min]="0" fill="outline" name="deposit"
+          [label]="'Deposit'|translate" [(ngModel)]="appointment.deposit" [placeholder]="'Deposit'|translate"
+          type="number" labelPlacement="stacked"></ion-input>
+
         <ion-input mode="md" required="true" style="margin-bottom: 5px" inputmode="tel" [maxlength]="15" fill="outline"
           name="phone" [label]="'WhatsApp No.'|translate" [(ngModel)]="appointment.phone" placeholder="962-999-999-999" type="tel"
           labelPlacement="stacked"></ion-input>

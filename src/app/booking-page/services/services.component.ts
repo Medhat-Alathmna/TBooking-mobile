@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MainPageService } from '../main-page.service';
+import { MainPageService } from '../booking-page.service';
 import { BaseComponent, isSet } from 'src/app/core/base/base.component';
 import { LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';

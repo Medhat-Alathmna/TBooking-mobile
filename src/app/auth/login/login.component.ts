@@ -36,10 +36,8 @@ export class LoginComponent extends BaseComponent implements OnInit {
   }
 
   
-  async login() {
-    console.log(this.email, this.password);
-    
-    await this.showLoading('Logging')
+  async login() {    
+    await this.showLoading('Logging in')
     this.authService.login(this.email, this.password).subscribe((user: any) => {
       localStorage.setItem('userAuth', JSON.stringify(user))
       this.dismissLoading().then(r => {

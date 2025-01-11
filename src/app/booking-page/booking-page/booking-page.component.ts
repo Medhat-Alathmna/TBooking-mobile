@@ -1,7 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { Appointment } from 'src/app/modals/appoiments';
-import { MainPageService } from '../main-page.service';
+import { MainPageService } from '../booking-page.service';
 import { BaseComponent, isSet } from 'src/app/core/base/base.component';
 import { ServicesComponent } from '../services/services.component';
 import { Router } from '@angular/router';
@@ -10,11 +10,11 @@ import OneSignal from 'onesignal-cordova-plugin';
 
 
 @Component({
-  selector: 'app-main-page',
-  templateUrl: './main-page.component.html',
-  styleUrls: ['./main-page.component.scss'],
+  selector: 'app-booking-page',
+  templateUrl: './booking-page.component.html',
+  styleUrls: ['./booking-page.component.scss'],
 })
-export class MainPageComponent extends BaseComponent implements OnInit {
+export class BookingPageComponent extends BaseComponent implements OnInit {
 
   constructor(public modalController: ModalController, 
     private mainPageService: MainPageService,public translate: TranslateService,
@@ -28,15 +28,18 @@ export class MainPageComponent extends BaseComponent implements OnInit {
 
 
   ngOnInit() {
-    this.getNotfi()
-    console.log(JSON.parse(localStorage.getItem('appointemts')));
+    // this.getNotfi()
+  this.initAppo()
+  }
+
+  initAppo(){
     this.appointment.fromDate = new Date().toISOString()
     this.appointment.toDate = new Date().toISOString()
     this.appointment.employee=[]
+    this.appointment.deposit=0
     this.getUsers()
     this.servicesForm()
   }
-
   dismissModal() {
     this.modalController.dismiss();
   }
@@ -48,7 +51,6 @@ export class MainPageComponent extends BaseComponent implements OnInit {
   }
 
   addAppominet() {
-
     if (!this.selectServices.length) {
       this.presentToast('Please select your employee and then select your services')
       return
@@ -78,6 +80,11 @@ export class MainPageComponent extends BaseComponent implements OnInit {
       if (!isSet(data)) {
         return
       }
+      data.map(res=>{
+        delete res.password
+      })
+      console.log(data);
+      
       this.users = data
       subscription.unsubscribe()
     }, error => {
@@ -141,7 +148,6 @@ this.getTotalPrice()
     this.selectServices.splice(index,1)
   }
   getNotfi() {
-   
     const subscription = this.mainPageService.getNotfi().subscribe((results: any) => {
       this.loading = false    
       subscription.unsubscribe()
