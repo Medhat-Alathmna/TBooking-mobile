@@ -14,7 +14,8 @@ import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule,CommonModule,FormsModule,
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule,
+    CommonModule,FormsModule,
     TranslateModule.forRoot({
       loader: {
           provide: TranslateLoader,
