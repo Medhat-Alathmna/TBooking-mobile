@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button [disabled]="form.invalid" color="primary"(click)="addAppominet()" translate>Send</ion-button>
+      <ion-button [disabled]="form.invalid" color="primary" (click)="addAppominet()" translate>Send</ion-button>
     </ion-buttons>
     <ion-buttons slot="end">
       <ion-back-button default-href="#"></ion-back-button>
@@ -11,38 +11,50 @@
 <ion-content color="light" [fullscreen]="true">
 
   <ion-grid>
-    <form #form="ngForm" body >
+    <form #form="ngForm" body>
 
       <ion-row>
-        <ion-label style="font-size: 1.5rem;padding-bottom: 1rem" translate>Customer Deatils</ion-label>
+        <ion-col size="12">
+          <ion-label style="font-size: 1.5rem;padding-bottom: 1rem" translate>Customer Deatils</ion-label>
+        </ion-col>
+        <ion-col size="12" style="padding-block: 0;">
+          <ion-input mode="md" required="true" fill="outline" name="firstName" [label]="'First Name'|translate"
+            [(ngModel)]="appointment.firstName" [placeholder]="'First Name'|translate" type="text"
+            labelPlacement="stacked"></ion-input>
+        </ion-col>
+        <ion-col size="12" style="padding-block: 0;">
+          <ion-input mode="md" required="true" fill="outline" name="middleName" [label]="'Middle Name'|translate"
+            [(ngModel)]="appointment.middleName" type="text" [placeholder]="'Middle Name'|translate"
+            labelPlacement="stacked"></ion-input>
+        </ion-col>
+        <ion-col size="12" style="padding-block: 0;">
+          <ion-input mode="md" required="true" fill="outline" name="lastName" [label]="'Last Name'|translate"
+            [(ngModel)]="appointment.lastName" [placeholder]="'Last Name'|translate" type="text"
+            labelPlacement="stacked"></ion-input>
+        </ion-col>
+        <ion-col size="12" style="padding-block: 0;">
+          <ion-input *ngIf='userAuth' mode="md" required="true" [min]="0" fill="outline" name="deposit"
+            [label]="'Deposit'|translate" [(ngModel)]="appointment.deposit" [placeholder]="'Deposit'|translate"
+            type="number" labelPlacement="stacked"></ion-input>
+        </ion-col>
+        <ion-col style="padding-block: 0;" size="6">
+          <ion-input mode="md" required="true" inputmode="tel" [maxlength]="15" fill="outline" name="phone"
+            [label]="'WhatsApp No.'|translate" (ngModelChange)="addslah($event)" [(ngModel)]="appointment.phone" placeholder="962-999-999-999" type="tel"
+            labelPlacement="stacked"></ion-input>
+        </ion-col>
 
-        <ion-input mode="md" required="true" style="margin-bottom: 5px" fill="outline" name="firstName"
-          [label]="'First Name'|translate" [(ngModel)]="appointment.firstName" [placeholder]="'First Name'|translate"
-          type="text" labelPlacement="stacked"></ion-input>
+        <ion-col style="padding-block: 0;" size="6">
+          <ion-input mode="md" fill="outline" [label]="'Address'|translate" name="address"
+            [(ngModel)]="appointment.address" placeholder="Amman" type="text" labelPlacement="stacked"></ion-input>
+        </ion-col>
 
-        <ion-input mode="md" required="true" style="margin-bottom: 5px" fill="outline" name="middleName"
-          [label]="'Middle Name'|translate" [(ngModel)]="appointment.middleName" type="text"
-          [placeholder]="'Middle Name'|translate" labelPlacement="stacked"></ion-input>
-
-        <ion-input mode="md" required="true" style="margin-bottom: 5px" fill="outline" name="lastName"
-          [label]="'Last Name'|translate" [(ngModel)]="appointment.lastName" [placeholder]="'Last Name'|translate"
-          type="text" labelPlacement="stacked"></ion-input>
-
-        <ion-input *ngIf='userAuth' mode="md" required="true" style="margin-bottom: 5px" [min]="0" fill="outline" name="deposit"
-          [label]="'Deposit'|translate" [(ngModel)]="appointment.deposit" [placeholder]="'Deposit'|translate"
-          type="number" labelPlacement="stacked"></ion-input>
-
-        <ion-input mode="md" required="true" style="margin-bottom: 5px" inputmode="tel" [maxlength]="15" fill="outline"
-          name="phone" [label]="'WhatsApp No.'|translate" [(ngModel)]="appointment.phone" placeholder="962-999-999-999" type="tel"
-          labelPlacement="stacked"></ion-input>
-
-        <ion-input mode="md" fill="outline" [label]="'Address'|translate" name="address"
-          [(ngModel)]="appointment.address" placeholder="Amman" type="text" labelPlacement="stacked"></ion-input>
       </ion-row>
     </form>
 
     <ion-row>
-      <ion-label style="font-size: 1.5rem;padding-bottom: 1rem" translate>Appointment Details</ion-label>
+      <ion-col size="12">
+        <ion-label style="font-size: 1.5rem;" translate>Appointment Details</ion-label>
+      </ion-col>
       <ion-card style="width: -webkit-fill-available;" id="open-modal2">
         <ion-row style="justify-content: center;">
           <div style="padding: 15px;">
@@ -61,7 +73,9 @@
           <ion-col style="justify-content: center;display: flex;">
             <div style="padding: 15px;">
               <ion-icon name="alarm-outline"></ion-icon>
-              <ion-label color="primary" style="padding-left: 5px;">{{appointment.fromDate | date:'hh:mm a'}}</ion-label>
+              <ion-label color="primary" style="padding-left: 5px;">
+                {{appointment.fromDate | date:'hh:mm a'}}
+              </ion-label>
             </div>
           </ion-col>
         </ion-row>
@@ -80,7 +94,7 @@
     <ion-row *ngIf="selectServices.length" style="justify-content: space-between;padding-inline: 0.5rem">
       <ion-label style="font-size: 1.5rem;" translate>Services</ion-label>
       <ion-label style="display: flex;align-items: center;">{{'Total'|translate}}:
-        {{getTotalPrice().serviceAmount}} {{getCurrencySymbol(cur.code)}}</ion-label>
+        {{getTotalPrice().serviceAmount}} {{getCurrencySymbol(cur?.code)}}</ion-label>
     </ion-row>
     <ion-row *ngFor="let service of selectServices let i=index">
       <ion-card style="margin-left: 0;margin-right: 0;width: -webkit-fill-available;">
@@ -88,9 +102,9 @@
           <ion-item lines="none" style="width: 100%;">
 
             <ion-card-header style="flex-direction: row;justify-content: space-between;width: 100%;">
-              <ion-card-title style="width: 70%">{{lang==='ar'?service.ar:service.en}}</ion-card-title>
-              <ion-text style="align-self: center;">{{'Price'|translate}}: {{service.price}}
-                {{getCurrencySymbol(cur.code)}}</ion-text>
+              <ion-card-title style="width: 70%">{{lang==='ar'?service?.ar:service?.en}}</ion-card-title>
+              <ion-text style="align-self: center;">{{'Price'|translate}}: {{service?.price}}
+                {{getCurrencySymbol(cur?.code)}}</ion-text>
             </ion-card-header>
           </ion-item>
           <ion-item-options side="end">
@@ -122,7 +136,7 @@
 <ion-modal #openmodal2 trigger="open-modal2">
   <ng-template>
     <ion-content force-overscroll="false">
-      <ion-datetime  #dateTime>
+      <ion-datetime #dateTime>
       </ion-datetime>
       <ion-toolbar>
         <ion-buttons style="justify-content: space-between !important;">

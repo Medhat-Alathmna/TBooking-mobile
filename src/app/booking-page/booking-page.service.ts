@@ -28,11 +28,15 @@ export class MainPageService {
       middleName: appointment.middleName,
       lastName: appointment.lastName,
       phone: appointment.phone,
+      expoPushToken: appointment.expoPushToken,
       approved:this.authData?true:false,
       deposit:this.authData?appointment.deposit:0,
       appoBy:this.authData? this.authData.username:null,
       createBy: this.authData?this.authData.username:'Mobile User',
     }
+    console.log(appointment.expoPushToken);
+    console.log(body);
+
     return this.api.post<Appointment>('/booking', body);
   }
   servicesMobile(): Observable<any> {
@@ -41,8 +45,6 @@ export class MainPageService {
   getEmployee(): Observable<any[]> {
     return this.api.get<any[]>(`usersMobile?populate=role&filters[hide][$eq]=false&filters[blocked][$eq]=false&filters[isToday][$eq]=true`);
   }
-  getNotfi(): Observable<any> {
-    return this.api.getGuest<any>(`notfi`);
-  }
+
  
 }

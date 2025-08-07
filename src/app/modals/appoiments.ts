@@ -23,6 +23,7 @@ export class Appointment {
     toDate?: Date |any;
     birthDate?: Date |any;
     number?: any;
+    expoPushToken?: any;
     products?: any;
     customer:{
         firstName:any;

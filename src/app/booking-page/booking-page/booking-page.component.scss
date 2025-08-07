@@ -18,3 +18,11 @@ ion-modal {
   ion-header{
     --background: #000000 !important;
   }
+
+  ion-input{
+    margin-bottom: 0.5rem;
+  }
+
+  :host::ng-deep .select-wrapper{
+    padding-inline: 1rem;
+  }

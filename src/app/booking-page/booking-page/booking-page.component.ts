@@ -7,6 +7,7 @@ import { ServicesComponent } from '../services/services.component';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import OneSignal from 'onesignal-cordova-plugin';
+import { PushNotifications, Token, PermissionStatus } from '@capacitor/push-notifications';
 
 
 @Component({
@@ -16,54 +17,63 @@ import OneSignal from 'onesignal-cordova-plugin';
 })
 export class BookingPageComponent extends BaseComponent implements OnInit {
 
-  constructor(public modalController: ModalController, 
-    private mainPageService: MainPageService,public translate: TranslateService,
-    public loadingController: LoadingController,public router:Router,
-    public toastController: ToastController) { super(loadingController, translate,toastController,router) }
+  constructor(public modalController: ModalController,
+    private mainPageService: MainPageService, public translate: TranslateService,
+    public loadingController: LoadingController, public router: Router,
+    public toastController: ToastController) { super(loadingController, translate, toastController, router) }
 
   users = []
   selectServices = []
   appointment = new Appointment
+  expoPushToken = localStorage.getItem('expoPushToken') || null;
   // closeCurrentTime = startOfHour(addMinutes(new Date(), Math.round(new Date().getMinutes() / 15) * 15));
 
 
   ngOnInit() {
     // this.getNotfi()
-  this.initAppo()
+    this.initAppo()
   }
 
-  initAppo(){
+  initAppo() {
     this.appointment.fromDate = new Date().toISOString()
     this.appointment.toDate = new Date().toISOString()
-    this.appointment.employee=[]
-    this.appointment.deposit=0
+    this.appointment.employee = []
+    this.appointment.deposit = 0
     this.getUsers()
     this.servicesForm()
   }
   dismissModal() {
     this.modalController.dismiss();
   }
-   pushToLocalStorageArray(key: string, value: any) {
+  pushToLocalStorageArray(key: string, value: any) {
     const existing = localStorage.getItem(key);
     const array = existing ? JSON.parse(existing) : [];
     array.push(value);
     localStorage.setItem(key, JSON.stringify(array));
   }
+addslah(event){
+this.appointment.phone=event.join('-')
 
-  addAppominet() {
+}
+   addAppominet() {
     if (!this.selectServices.length) {
       this.presentToast('Please select your employee and then select your services')
       return
     }
-    this.appointment.employee.services=this.selectServices
-    this.appointment.phone=this.appointment.phone.toString();
+    if (!this.appointment.fromDate || !this.appointment.toDate) {
+      this.presentToast('Please select your date')
+      return
+    }
+    this.appointment.expoPushToken = this.expoPushToken
+    this.appointment.employee.services = this.selectServices
+    this.appointment.phone = this.appointment.phone.toString();
     this.appointment.fromDate = new Date(this.appointment.fromDate).toISOString()
     this.appointment.toDate = new Date(this.appointment.toDate).toISOString()
-    const subscription = this.mainPageService.addAppominets(this.appointment).subscribe((data:any) => {
+    const subscription = this.mainPageService.addAppominets(this.appointment).subscribe((data: any) => {
       if (!isSet(data)) {
         return
       }
-      this.pushToLocalStorageArray('appointemts',data.createAppo)
+      this.pushToLocalStorageArray('appointemts', data.createAppo)
       this.presentToast('Booking Created , Please take a look at our Works')
       setTimeout(() => {
         this.router.navigateByUrl('/ads')
@@ -80,11 +90,9 @@ export class BookingPageComponent extends BaseComponent implements OnInit {
       if (!isSet(data)) {
         return
       }
-      data.map(res=>{
+      data.map(res => {
         delete res.password
       })
-      console.log(data);
-      
       this.users = data
       subscription.unsubscribe()
     }, error => {
@@ -107,14 +115,14 @@ export class BookingPageComponent extends BaseComponent implements OnInit {
       if (existServ) {
         this.presentToast(this.trans('This Service Already Selected'))
         return
-      }      
+      }
       this.selectServices.push({
         id: data?.id,
         ar: data?.ar,
         en: data?.en,
         price: data?.price
       })
-this.getTotalPrice()
+      this.getTotalPrice()
       this.mainPageService.addServicesToForm.next(null);
     }, async (error) => {
       await this.presentErrorToast();
@@ -123,39 +131,29 @@ this.getTotalPrice()
   }
   getTotalPrice() {
     let serviceAmount: number = 0
-    this.selectServices?.map(rs=>{
-      serviceAmount +=rs.price
-    })   
-      
-    return {serviceAmount}
+    this.selectServices?.map(rs => {
+      serviceAmount += rs.price
+    })
+
+    return { serviceAmount }
   }
   selectDate(value) {
-    const today=new Date().toISOString()
- 
+    const today = new Date().toISOString()
+
     this.appointment.fromDate = new Date(value).toISOString()
     console.log(this.appointment.fromDate);
 
-    if ( this.appointment.fromDate <today) {
+    if (this.appointment.fromDate < today) {
       setTimeout(() => {
         this.appointment.fromDate = today
       }, 1000);
-       this.presentToast('You can not Booking  befor now')
+      this.presentToast('You can not Booking  befor now')
     }
     this.dismissModal();
 
   }
-  removeServices(index){
-    this.selectServices.splice(index,1)
+  removeServices(index) {
+    this.selectServices.splice(index, 1)
   }
-  getNotfi() {
-    const subscription = this.mainPageService.getNotfi().subscribe((results: any) => {
-      this.loading = false    
-      subscription.unsubscribe()
-    }, error => {
-      this.loading = false
-      console.log(error);
-      
-      subscription.unsubscribe()
-    })
-  }
+
 }

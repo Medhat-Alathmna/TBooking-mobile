@@ -9,7 +9,7 @@ import { UserToken } from '../modals/UserToken';
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(private httpClient: HttpClient,) {
+  constructor(private httpClient: HttpClient,private api: ApiService) {
 
   }
 
@@ -29,6 +29,11 @@ export class AuthService {
   sendEmail(email): Observable<any>{
     let body={email}
     return this.httpClient.post<any>(`${environment.apiUrl}/auth/forgot-password `, body);
+
+  }
+   updateUser(user,expoToken): Observable<any>{
+    let body={expoToken}
+    return this.api.put<any>(`/users/${user.id}`,body);
 
   }
 

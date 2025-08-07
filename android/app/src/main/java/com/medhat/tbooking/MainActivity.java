@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package com.medhat.tbooking;
 
 import com.getcapacitor.BridgeActivity;
 

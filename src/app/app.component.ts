@@ -1,12 +1,15 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, inject, Inject, OnInit } from '@angular/core';
 import { Route, Router } from '@angular/router';
 import { IonMenu, MenuController } from '@ionic/angular';
 import { isSet } from './core/base/base.component';
 import { TranslateService } from '@ngx-translate/core';
 import { HomeService } from './home/home.service';
 import { PermissionService } from './core/permission.service';
-
+import * as Device from 'expo-device';
+import { AuthService } from './auth/auth.service';
+import { PushNotifications, Token, PermissionStatus } from '@capacitor/push-notifications';
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-root',
@@ -18,20 +21,26 @@ export class AppComponent {
   lang = localStorage.getItem('currentLang')
   isDark: boolean = JSON.parse(localStorage.getItem('isDark'))
   themeMode
+  userId: string = this.authData?.id;
   settings
   paletteToggle: any = false;
 
 
- 
-  constructor(@Inject(DOCUMENT) private document: Document, private homeService: HomeService,public permissionService:PermissionService,
+
+  constructor(@Inject(DOCUMENT) private document: Document, private platform: Platform, private homeService: HomeService, public permissionService: PermissionService, private userService: AuthService,
     private router: Router, private translate: TranslateService,
     private menuController: MenuController) {
+
+    this.platform.ready().then(() => {
       if (isSet(this.authData)) {
         this.getMe()
       }
-    this.getLang()
-    this.getSettings()
-    this.getCurrencies()
+      this.initPush();
+      this.getLang()
+      this.getSettings()
+      this.getCurrencies()
+    });
+
     if (!isSet(this.isDark)) {
       this.paletteToggle = true
       localStorage.setItem('isDark', this.paletteToggle)
@@ -104,13 +113,64 @@ export class AppComponent {
 
   getMe() {
     const subscription = this.homeService.getMe().subscribe(async (user: any) => {
-      sessionStorage.setItem('prev',JSON.stringify(user.privilege.pages))
-   await   this.permissionService.setPermissions(user.privilege.pages);
+      sessionStorage.setItem('prev', JSON.stringify(user.privilege.pages))
+      await this.permissionService.setPermissions(user.privilege.pages);
       subscription.unsubscribe()
     }, error => {
       this.logout()
       subscription.unsubscribe()
     })
   }
+  async initPush() {
+    try {
+      const permissionStatus: PermissionStatus = await PushNotifications.checkPermissions();
+
+      if (permissionStatus.receive !== 'granted') {
+        const requestStatus = await PushNotifications.requestPermissions();
+
+        if (requestStatus.receive !== 'granted') {
+          console.warn('Push permission not granted.');
+          return;
+        }
+      }
+
+      // Permission granted — proceed to register
+      PushNotifications.register();
+
+      PushNotifications.addListener('registration', (token: Token) => {
+        console.log('Push registration success, token:', token.value);
+        // this.sendTokenToStrapi(token.value);
+        localStorage.setItem('expoPushToken', token.value);
+      });
+
+      PushNotifications.addListener('registrationError', (error) => {
+        console.error('Push registration error:', error);
+      });
+
+      PushNotifications.addListener('pushNotificationReceived', (notification) => {
+        console.log('Notification received:', notification);
+      });
+
+      PushNotifications.addListener('pushNotificationActionPerformed', (notification) => {
+        console.log('Notification tapped:', notification);
+      });
+
+    } catch (error) {
+      console.error('Error initializing push notifications:', error);
+    }
+  }
+
+  sendTokenToStrapi(token: string) {
+    this.userService.updateUser(this.userId, token).subscribe({
+      next: (response) => {
+        console.log('Expo push token updated successfully:', response);
+      },
+      error: (error) => {
+        console.error('Error updating Expo push token:', error);
+      }
+    });
+  }
+
 
 }
+

@@ -16,7 +16,12 @@ export class ServicesComponent extends BaseComponent  implements OnInit {
      private modalController: ModalController,public loadingController: LoadingController,public translates: TranslateService,
     public toastController: ToastController) { super(loadingController,translates, toastController,)}
 
-  ngOnInit() {this.getServices()}
+  ngOnInit() {
+    if (!localStorage.getItem('currency')) {
+      
+    }
+    this.getServices()
+  }
   getServices(){
     // this.showLoading('Loading')
     const subscription = this.mainPageService.servicesMobile().subscribe((data) => {

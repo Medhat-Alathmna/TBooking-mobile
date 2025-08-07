@@ -110,7 +110,7 @@ export class BaseComponent implements  OnDestroy {
     if(!isSet(format)) {
       format = 'narrow';
     }
-    return getCurrencySymbol(code, format, locale);
+    return getCurrencySymbol(code??'', format, locale);
   }
 }
 export const isSet = (value: any): boolean => {
