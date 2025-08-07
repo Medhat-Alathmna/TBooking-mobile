@@ -31,11 +31,9 @@ export class MainPageService {
       expoPushToken: appointment.expoPushToken,
       approved:this.authData?true:false,
       deposit:this.authData?appointment.deposit:0,
-      appoBy:this.authData? this.authData.username:null,
-      createBy: this.authData?this.authData.username:'Mobile User',
+      appoBy: this.authData??null,
+      createBy: this.authData??null,
     }
-    console.log(appointment.expoPushToken);
-    console.log(body);
 
     return this.api.post<Appointment>('/booking', body);
   }
