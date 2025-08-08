@@ -156,4 +156,13 @@ this.appointment.phone=event.join('-')
     this.selectServices.splice(index, 1)
   }
 
+  onInputChange(event: any) {
+    const input = event.target.value.replace(/\D/g, ''); // remove non-digits
+    this.appointment.phone  = this.formatWithDashes(input);
+  }
+
+  formatWithDashes(value: string): string {
+    return value.match(/.{1,3}/g)?.join('-') || '';
+  }
+
 }

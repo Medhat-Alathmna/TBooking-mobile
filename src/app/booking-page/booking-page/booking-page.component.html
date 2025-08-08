@@ -39,7 +39,8 @@
         </ion-col>
         <ion-col style="padding-block: 0;" size="6">
           <ion-input mode="md" required="true" inputmode="tel" [maxlength]="15" fill="outline" name="phone"
-            [label]="'WhatsApp No.'|translate" (ngModelChange)="addslah($event)" [(ngModel)]="appointment.phone" placeholder="962-999-999-999" type="tel"
+            [label]="'WhatsApp No.'|translate"  (ionInput)="onInputChange($event)"
+    maxlength="15"  [(ngModel)]="appointment.phone" placeholder="962-999-999-999" type="tel"
             labelPlacement="stacked"></ion-input>
         </ion-col>
 
