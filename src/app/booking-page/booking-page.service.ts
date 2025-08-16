@@ -28,11 +28,12 @@ export class MainPageService {
       middleName: appointment.middleName,
       lastName: appointment.lastName,
       phone: appointment.phone,
+      platform: 'Mobile',
       expoPushToken: appointment.expoPushToken,
       approved:this.authData?true:false,
       deposit:this.authData?appointment.deposit:0,
-      appoBy: this.authData??null,
-      createBy: this.authData??null,
+      confirmBy: this.authData??null,
+      bookBy: this.authData??null,
     }
 
     return this.api.post<Appointment>('/booking', body);
