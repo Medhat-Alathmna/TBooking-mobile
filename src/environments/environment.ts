@@ -2,7 +2,7 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-export var clientName='local'
+export var clientName='Demo'
 export interface ClientConfig {
   apiUrl: string;
   logoUrl: string;
@@ -16,8 +16,8 @@ const clientConfigs: { [key: string]: ClientConfig } = {
     logoUrl: "assets/logos/client1.png",
   },
   Demo: {
-    apiUrl: "https://orca-app-n5847.ondigitalocean.app/api",
-    imgUrl: "https://orca-app-n5847.ondigitalocean.app",
+    apiUrl: "https://proud-heart-568cfbae9a.strapiapp.com/api",
+    imgUrl: "https://proud-heart-568cfbae9a.strapiapp.com",
     logoUrl: "assets/logos/client2.png",
   },
   local: {

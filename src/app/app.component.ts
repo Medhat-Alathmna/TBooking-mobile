@@ -1,7 +1,7 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, inject, Inject, OnInit } from '@angular/core';
 import { Route, Router } from '@angular/router';
-import { IonMenu, MenuController } from '@ionic/angular';
+import { IonMenu, MenuController, Platform } from '@ionic/angular';
 import { isSet } from './core/base/base.component';
 import { TranslateService } from '@ngx-translate/core';
 import { HomeService } from './home/home.service';
@@ -9,7 +9,8 @@ import { PermissionService } from './core/permission.service';
 import * as Device from 'expo-device';
 import { AuthService } from './auth/auth.service';
 import { PushNotifications, Token, PermissionStatus } from '@capacitor/push-notifications';
-import { Platform } from '@ionic/angular';
+import { SplashScreen } from '@capacitor/splash-screen';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -25,21 +26,43 @@ export class AppComponent {
   settings
   paletteToggle: any = false;
 
+  constructor(
+    @Inject(DOCUMENT) private document: Document,
+    private platform: Platform,
+    private homeService: HomeService,
+    public permissionService: PermissionService,
+    private userService: AuthService,
+    private router: Router,
+    private translate: TranslateService,
+    private menuController: MenuController
+  ) {
+    this.initializeApp();
+  }
 
+  async initializeApp() {
+    await this.platform.ready();
 
-  constructor(@Inject(DOCUMENT) private document: Document, private platform: Platform, private homeService: HomeService, public permissionService: PermissionService, private userService: AuthService,
-    private router: Router, private translate: TranslateService,
-    private menuController: MenuController) {
+    // The splash screen is shown by default. We'll hide it after our tasks are complete.
+    try {
+      const initialzationTasks = [
+        this.getLang(),
+        this.getSettings(),
+        this.getCurrencies(),
+        this.initPush(),
+      ];
 
-    this.platform.ready().then(() => {
       if (isSet(this.authData)) {
-        this.getMe()
+        initialzationTasks.push(this.getMe());
       }
-      this.initPush();
-      this.getLang()
-      this.getSettings()
-      this.getCurrencies()
-    });
+
+      await Promise.all(initialzationTasks);
+
+    } catch (error) {
+      console.error('Initialization failed:', error);
+    } finally {
+      // This will run regardless of whether the promises succeeded or failed.
+      SplashScreen.hide();
+    }
 
     if (!isSet(this.isDark)) {
       this.paletteToggle = true
@@ -48,7 +71,6 @@ export class AppComponent {
     const prefersDark = window.matchMedia(`(prefers-color-scheme: ${this.isDark ? 'dark' : 'light'})`);
     this.initializeDarkPalette(prefersDark.matches);
     prefersDark.addEventListener('change', (mediaQuery) => this.initializeDarkPalette(mediaQuery.matches));
-
   }
 
   initializeDarkPalette(isDark) {
@@ -64,15 +86,17 @@ export class AppComponent {
   toggleDarkPalette(shouldAdd) {
     document.documentElement.classList.toggle('ion-palette-dark', shouldAdd);
   }
+
   logout() {
     localStorage.removeItem('userAuth')
     this.router.navigateByUrl('/')
     location.reload()
-
   }
+
   moveToLogin() {
     this.router.navigateByUrl(this.authData ? '/' : '/login')
   }
+
   getLang() {
     if (!localStorage.getItem('currentLang')) {
       localStorage.setItem('currentLang', 'en')
@@ -83,44 +107,37 @@ export class AppComponent {
     const htmlTag = this.document.getElementsByTagName("html")[0] as HTMLHtmlElement;
     htmlTag.dir = lang !== "en" ? "rtl" : "ltr";
   }
+
   changeLang() {
     localStorage.setItem('currentLang', this.lang !== "en" ? "en" : "ar")
     location.reload()
   }
-  getSettings() {
-    const subscription = this.homeService.getMainSettings().subscribe((data) => {
-      if (!isSet(data)) {
-        return
-      }
-      this.settings = data.data.attributes
-      localStorage.setItem('settings', JSON.stringify(this.settings))
 
-      subscription.unsubscribe()
-    }, error => {
-      subscription.unsubscribe()
-    })
+  getSettings() {
+    return firstValueFrom(this.homeService.getMainSettings()).then(data => {
+      if (isSet(data)) {
+        this.settings = data.data.attributes;
+        localStorage.setItem('settings', JSON.stringify(this.settings));
+      }
+    });
   }
 
   getCurrencies() {
-    const subscription = this.homeService.getCurrencies().subscribe((results: any) => {
-      localStorage.setItem('currency', JSON.stringify(results.data.attributes))
-
-      subscription.unsubscribe()
-    }, error => {
-      subscription.unsubscribe()
-    })
+    return firstValueFrom(this.homeService.getCurrencies()).then((results: any) => {
+      localStorage.setItem('currency', JSON.stringify(results.data.attributes));
+    });
   }
 
-  getMe() {
-    const subscription = this.homeService.getMe().subscribe(async (user: any) => {
-      sessionStorage.setItem('prev', JSON.stringify(user.privilege.pages))
+  async getMe() {
+    try {
+      const user: any = await firstValueFrom(this.homeService.getMe());
+      sessionStorage.setItem('prev', JSON.stringify(user.privilege.pages));
       await this.permissionService.setPermissions(user.privilege.pages);
-      subscription.unsubscribe()
-    }, error => {
-      this.logout()
-      subscription.unsubscribe()
-    })
+    } catch (error) {
+      this.logout();
+    }
   }
+  
   async initPush() {
     try {
       const permissionStatus: PermissionStatus = await PushNotifications.checkPermissions();
@@ -134,32 +151,18 @@ export class AppComponent {
         }
       }
 
-      // Permission granted — proceed to register
-      PushNotifications.register();
+      await PushNotifications.register();
 
       PushNotifications.addListener('registration', (token: Token) => {
         console.log('Push registration success, token:', token.value);
-        // this.sendTokenToStrapi(token.value);
         localStorage.setItem('expoPushToken', token.value);
-      });
-
-      PushNotifications.addListener('registrationError', (error) => {
-        console.error('Push registration error:', error);
-      });
-
-      PushNotifications.addListener('pushNotificationReceived', (notification) => {
-        console.log('Notification received:', notification);
-      });
-
-      PushNotifications.addListener('pushNotificationActionPerformed', (notification) => {
-        console.log('Notification tapped:', notification);
       });
 
     } catch (error) {
       console.error('Error initializing push notifications:', error);
     }
   }
-
+  
   sendTokenToStrapi(token: string) {
     this.userService.updateUser(this.userId, token).subscribe({
       next: (response) => {
@@ -170,7 +173,4 @@ export class AppComponent {
       }
     });
   }
-
-
 }
-
